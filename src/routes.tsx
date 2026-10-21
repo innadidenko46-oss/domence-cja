@@ -17,22 +17,24 @@ const PrivacyPage = page(() => import('./pages/PrivacyPage.tsx'), 'PrivacyPage')
 const LandingPage = lazy(() => import('./pages/LandingPage.tsx').then((m) => ({ default: m.LandingPage })));
 export const NotFoundPage = page(() => import('./pages/NotFoundPage.tsx'), 'NotFoundPage');
 
-const landing = (slug: string) => ({ path: `/${slug}`, element: <LandingPage slug={slug} /> });
+const landing = (slug: string) => ({ path: `/${slug}`, element: <LandingPage slug={slug} />, file: 'src/pages/LandingPage.tsx' });
 
-export const ROUTES: { path: string; element: ReactElement }[] = [
-  { path: '/', element: <HomePage /> },
-  { path: '/systemy', element: <SystemsPage /> },
-  { path: '/teletechnika', element: <TeletechnicsPage /> },
-  { path: '/scenariusze', element: <ScenariosPage /> },
-  { path: '/jak-zaczac', element: <StartPage /> },
-  { path: '/faq', element: <FaqPage /> },
+// `file` is the page's source: the build preloads its code in that page's HTML, so the
+// page works sooner on slow phones (scripts/prerender.mjs).
+export const ROUTES: { path: string; element: ReactElement; file: string }[] = [
+  { path: '/', element: <HomePage />, file: 'src/pages/HomePage.tsx' },
+  { path: '/systemy', element: <SystemsPage />, file: 'src/pages/SystemsPage.tsx' },
+  { path: '/teletechnika', element: <TeletechnicsPage />, file: 'src/pages/TeletechnicsPage.tsx' },
+  { path: '/scenariusze', element: <ScenariosPage />, file: 'src/pages/ScenariosPage.tsx' },
+  { path: '/jak-zaczac', element: <StartPage />, file: 'src/pages/StartPage.tsx' },
+  { path: '/faq', element: <FaqPage />, file: 'src/pages/FaqPage.tsx' },
   landing('inteligentny-dom-warszawa'),
   landing('wideodomofon-i-kamery-warszawa'),
   landing('ochrona-przed-zalaniem'),
   landing('automatyka-bez-kucia'),
-  { path: '/zapytanie', element: <EnquiryPage /> },
-  { path: '/kontakt', element: <ContactPage /> },
-  { path: '/polityka-prywatnosci', element: <PrivacyPage /> },
+  { path: '/zapytanie', element: <EnquiryPage />, file: 'src/pages/EnquiryPage.tsx' },
+  { path: '/kontakt', element: <ContactPage />, file: 'src/pages/ContactPage.tsx' },
+  { path: '/polityka-prywatnosci', element: <PrivacyPage />, file: 'src/pages/PrivacyPage.tsx' },
 ];
 
 // Old addresses that still get shared. vercel.json answers them with a 308 redirect;

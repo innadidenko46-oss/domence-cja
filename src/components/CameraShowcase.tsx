@@ -4,6 +4,7 @@ import { Eye, Lightbulb, Video, BellRing, ScanFace, Tablet, CheckCircle2, ArrowR
 import { CAMERA_PRODUCTS } from '../data/content.ts';
 import { CameraProduct } from '../types.ts';
 import { CTA } from '../config/site.ts';
+import { DeviceArt, DeviceKind } from './DeviceArt.tsx';
 
 const ICONS: Record<CameraProduct['category'], typeof Eye> = {
   cctv_color: Eye,
@@ -14,14 +15,25 @@ const ICONS: Record<CameraProduct['category'], typeof Eye> = {
   intercom_screen: Tablet,
 };
 
+const ART: Record<CameraProduct['category'], DeviceKind> = {
+  cctv_color: 'camera',
+  cctv_deter: 'camera-light',
+  cctv_wide: 'camera-wide',
+  intercom_panel: 'gate-panel',
+  intercom_face: 'face-reader',
+  intercom_screen: 'screen',
+};
+
 // Cameras, gate panel, face access and the screen at home, one at a time (tabs)
 export const CameraShowcase: React.FC = () => {
   const [activeId, setActiveId] = useState(CAMERA_PRODUCTS[0].id);
 
   const onKeyDown = (e: React.KeyboardEvent, index: number) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    // Arrows move between tabs, Home and End jump to the first and the last one
+    if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(e.key)) return;
     e.preventDefault();
-    const next = (index + (e.key === 'ArrowRight' ? 1 : -1) + CAMERA_PRODUCTS.length) % CAMERA_PRODUCTS.length;
+    const next =
+      e.key === 'Home' ? 0 : e.key === 'End' ? CAMERA_PRODUCTS.length - 1 : (index + (e.key === 'ArrowRight' ? 1 : -1) + CAMERA_PRODUCTS.length) % CAMERA_PRODUCTS.length;
     setActiveId(CAMERA_PRODUCTS[next].id);
     document.getElementById(`cam-tab-${CAMERA_PRODUCTS[next].id}`)?.focus();
   };
@@ -52,7 +64,7 @@ export const CameraShowcase: React.FC = () => {
                 onClick={() => setActiveId(prod.id)}
                 onKeyDown={(e) => onKeyDown(e, i)}
                 className={`p-3.5 min-h-[88px] rounded-[2px] text-left border flex flex-col justify-between gap-2 cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-petrol-600 focus-visible:ring-offset-2 ${
-                  selected ? 'bg-white border-amber-600 ring-1 ring-amber-600' : 'bg-gray-50 border-gray-200 hover:border-gray-400'
+                  selected ? 'bg-petrol-50 border-petrol-700 ring-1 ring-petrol-700' : 'bg-gray-50 border-gray-200 hover:border-gray-400'
                 }`}
               >
                 <span className={`w-8 h-8 rounded-[2px] flex items-center justify-center ${selected ? 'bg-petrol-700 text-white' : 'bg-white text-gray-700 border border-gray-200'}`}>
@@ -74,9 +86,12 @@ export const CameraShowcase: React.FC = () => {
           className="animate-fade-up rounded-[2px] border p-6 sm:p-8 lg:p-10 bg-white border-gray-200 grid lg:grid-cols-12 gap-8"
         >
           <div className="lg:col-span-5">
+            <div className="mb-6 h-40 sm:h-48 rounded-[2px] bg-petrol-50 border border-petrol-100 flex items-center justify-center">
+              <DeviceArt kind={ART[active.category]} className="h-32 sm:h-40 w-auto" />
+            </div>
             <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-gray-900">{active.name}</h3>
             <p className="mt-3 text-base sm:text-lg leading-relaxed text-gray-700">{active.tagline}</p>
-            <p className="mt-5 text-sm text-gray-600">
+            <p className="mt-5 text-base text-gray-600">
               <span className="font-semibold text-gray-900">Gdzie się sprawdza: </span>
               {active.bestUse}
             </p>

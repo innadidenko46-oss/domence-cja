@@ -5,6 +5,8 @@ import { PageHeader } from '../components/PageHeader.tsx';
 import { ProcessSection } from '../components/ProcessSection.tsx';
 import { Reveal } from '../components/Reveal.tsx';
 import { LANDINGS, PAGE_LABELS } from '../data/landings.ts';
+import { TrustList } from '../components/TrustList.tsx';
+import { FlowDiagram } from '../components/FlowDiagram.tsx';
 import { CTA } from '../config/site.ts';
 
 // One template for the search landing pages in src/data/landings.ts
@@ -22,6 +24,9 @@ export const LandingPage: React.FC<{ slug: string }> = ({ slug }) => {
           <span>{CTA.label}</span>
           <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
         </Link>
+        {/* Search visitors see the first screen only: what's free, and that we work in their area */}
+        <p className="mt-3 text-base text-gray-600">{CTA.note}. Odezwiemy się telefonicznie albo tylko e-mailem.</p>
+        <TrustList className="mt-6 pt-5 border-t border-gray-200 max-w-xl" />
       </PageHeader>
 
       {/* What it does for you, in plain words */}
@@ -43,6 +48,8 @@ export const LandingPage: React.FC<{ slug: string }> = ({ slug }) => {
           </Reveal>
         </div>
       </section>
+
+      <FlowDiagram title={page.flow.title} steps={page.flow.steps} />
 
       <ProcessSection />
 
@@ -70,8 +77,26 @@ export const LandingPage: React.FC<{ slug: string }> = ({ slug }) => {
         </div>
       </section>
 
+
+      <section className="py-14 lg:py-16 bg-petrol-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold">Opowiedz o swoim domu</h2>
+            <p className="mt-2 text-base text-gray-200 max-w-xl">
+              Kilka pytań i kontakt. Odezwiemy się telefonicznie albo tylko e-mailem, jak wolisz.
+            </p>
+          </div>
+          <Link
+            to={enquiry}
+            className="btn-accent self-start md:self-auto focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-petrol-900"
+          >
+            {CTA.label}
+          </Link>
+        </div>
+      </section>
+
       {/* Related pages */}
-      <nav aria-label="Zobacz też" className="bg-white border-t border-gray-200">
+      <nav aria-label="Zobacz też" className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
           <h2 className="font-display text-base font-bold text-gray-900 shrink-0">Zobacz też</h2>
           <ul className="flex flex-wrap gap-x-8 gap-y-2">
@@ -89,23 +114,6 @@ export const LandingPage: React.FC<{ slug: string }> = ({ slug }) => {
           </ul>
         </div>
       </nav>
-
-      <section className="py-14 lg:py-16 bg-petrol-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <h2 className="font-display text-2xl sm:text-3xl font-bold">Opowiedz o swoim domu</h2>
-            <p className="mt-2 text-base text-gray-200 max-w-xl">
-              Kilka pytań i kontakt. Odezwiemy się z propozycją telefonicznie albo tylko e-mailem, jak wolisz.
-            </p>
-          </div>
-          <Link
-            to={enquiry}
-            className="btn-accent self-start md:self-auto focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-petrol-900"
-          >
-            {CTA.label}
-          </Link>
-        </div>
-      </section>
     </div>
   );
 };

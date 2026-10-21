@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { Network, Video, KeyRound, ChevronDown, CheckCircle2 } from 'lucide-react';
 import { TELETECHNIC_SERVICES } from '../data/content.ts';
+import { Photo } from './Photo.tsx';
 
 const ICONS: Record<string, typeof Video> = { Camera: Video, KeyRound, Network };
+
+// Illustrative photos of what each card is about (public/images/foto, not our installations)
+const PHOTOS: Record<string, [src: string, alt: string]> = {
+  cctv: ['/images/foto/kamera-elewacja', 'Kamera na elewacji domu wieczorem, obok lampa nad podjazdem'],
+  access: ['/images/foto/czytnik-przy-drzwiach', 'Czytnik twarzy, karty i kodu przy drzwiach wejściowych'],
+  network: ['/images/foto/szafka-rejestrator', 'Szafka na ścianie z rejestratorem nagrań i uporządkowanymi kablami'],
+};
 
 // Three things we install for the entrance and cameras, each with "what exactly"
 export const TeletechnicsSection: React.FC = () => {
@@ -25,13 +33,23 @@ export const TeletechnicsSection: React.FC = () => {
             const Icon = ICONS[service.icon] ?? KeyRound;
             const open = openId === service.id;
             return (
-              <article key={service.id} className={`rounded-[2px] p-6 border ${open ? 'bg-white border-amber-600 ring-1 ring-amber-600' : 'bg-gray-50 border-gray-200'}`}>
+              <article key={service.id} className={`rounded-[2px] p-6 border ${open ? 'bg-white border-petrol-700 ring-1 ring-petrol-700' : 'bg-gray-50 border-gray-200'}`}>
+                {PHOTOS[service.id] && (
+                  <div className="-mx-6 -mt-6 mb-6 aspect-[16/10] overflow-hidden bg-gray-200">
+                    <Photo
+                      id={PHOTOS[service.id][0]}
+                      alt={PHOTOS[service.id][1]}
+                      sizes="(min-width: 1024px) 30vw, 100vw"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 <div className="flex items-start gap-4">
-                  <span className="w-11 h-11 rounded-[2px] flex items-center justify-center shrink-0 border bg-amber-500/10 border-amber-500/25">
+                  <span className="w-11 h-11 rounded-[2px] flex items-center justify-center shrink-0 border bg-petrol-50 border-petrol-100">
                     <Icon className="w-5 h-5 text-petrol-700" aria-hidden="true" />
                   </span>
                   <div>
-                    <h3 className="text-lg font-bold leading-snug text-gray-900">{service.title}</h3>
+                    <h3 className="font-display text-lg font-bold leading-snug text-gray-900">{service.title}</h3>
                     <p className="text-sm mt-1 text-amber-800">{service.subtitle}</p>
                   </div>
                 </div>
@@ -47,10 +65,10 @@ export const TeletechnicsSection: React.FC = () => {
                   <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
                 </button>
                 <div id={`tele-${service.id}`} hidden={!open} className="animate-fade-in mt-3 pt-4 border-t border-gray-200">
-                    <p className="text-sm leading-relaxed text-gray-600">{service.description}</p>
+                    <p className="text-base leading-relaxed text-gray-600">{service.description}</p>
                     <ul className="mt-4 space-y-2">
                       {service.equipment.map((item) => (
-                        <li key={item} className="text-sm flex items-start gap-2.5 text-gray-700">
+                        <li key={item} className="text-base flex items-start gap-2.5 text-gray-700">
                           <CheckCircle2 className="w-4 h-4 text-petrol-700 mt-0.5 shrink-0" aria-hidden="true" />
                           <span>{item}</span>
                         </li>

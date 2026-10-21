@@ -7,7 +7,7 @@
 //   node scripts/check-copy.mjs --fix  also insert the missing non-breaking spaces
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { parseAst } from 'rolldown/parseAst';
+import { parseAst } from 'vite';
 
 const FIX = process.argv.includes('--fix');
 const NBSP = ' ';

@@ -62,4 +62,6 @@ export interface FaqItem {
   simpleAnswer: string;
   technicalDetails: string;
   category: 'dzialanie' | 'koszty' | 'bezpieczenstwo' | 'remont';
+  /** Also shown in the short list on the home page */
+  onHome?: boolean;
 }

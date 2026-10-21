@@ -5,7 +5,7 @@ import React from 'react';
 // Decorative only: hidden from assistive tech, drawn in by CSS (.arc-draw), static under reduced motion.
 const R = 84;
 const STROKE = 9;
-const LIGHT_R = 8;
+const LIGHT_R = 5; // about 1.1× the stroke, as in the logo
 const GAP_DEG = 8; // half of the gap cut around the light
 
 const point = (deg: number) => {
@@ -29,7 +29,7 @@ export const BrandArcs: React.FC<{ className?: string }> = ({ className }) => {
           pathLength={1}
           className="arc-draw"
           style={{ animationDelay: `${400 + i * 300}ms` }}
-          stroke="var(--color-petrol-700)"
+          stroke="var(--color-petrol-900)"
           strokeWidth={STROKE}
         />
       ))}

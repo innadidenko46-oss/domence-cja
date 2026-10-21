@@ -18,11 +18,14 @@ export const MobileStickyBar: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  if (FORM_PAGES.includes(pathname)) return null;
-  if (pathname === '/' && !pastHero) return null;
+  // "/zapytanie/" is the same page as "/zapytanie"
+  const path = pathname.replace(/\/+$/, '') || '/';
+  if (FORM_PAGES.includes(path)) return null;
+  if (path === '/' && !pastHero) return null;
 
+  // From sm up the header shows the same button, so the bar is for phones only
   return (
-    <div className="fixed bottom-0 inset-x-0 z-40 md:hidden border-t p-3 bg-gray-50/95 backdrop-blur-xl border-gray-200 shadow-2xl">
+    <aside aria-label="Szybki kontakt" className="fixed bottom-0 inset-x-0 z-40 sm:hidden border-t p-3 bg-gray-50/95 backdrop-blur-xl border-gray-200 shadow-2xl">
       <div className="flex items-center gap-2">
         {SITE.phone && (
           <a
@@ -42,6 +45,7 @@ export const MobileStickyBar: React.FC = () => {
           >
             <Send className="w-4 h-4 text-petrol-700" aria-hidden="true" />
             <span>Telegram</span>
+            <span className="sr-only"> (otwiera się w{'\u00A0'}nowej karcie)</span>
           </a>
         )}
         <Link
@@ -49,9 +53,9 @@ export const MobileStickyBar: React.FC = () => {
           className="flex-1 min-w-0 min-h-11 px-3 rounded-[2px] bg-petrol-700 hover:bg-petrol-800 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-colors focus-visible:ring-2 focus-visible:ring-petrol-600 focus-visible:ring-offset-2"
         >
           <ClipboardList className="w-4 h-4 shrink-0" aria-hidden="true" />
-          <span className="truncate">{CTA.short}</span>
+          <span className="text-center leading-tight">{CTA.short}</span>
         </Link>
       </div>
-    </div>
+    </aside>
   );
 };

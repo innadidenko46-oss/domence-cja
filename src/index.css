@@ -43,6 +43,15 @@
     font-family: var(--font-sans);
     letter-spacing: -0.01em;
     color-scheme: light;
+    /* Focused elements and #anchors stop below the fixed header, not under it */
+    scroll-padding-top: 5rem;
+  }
+
+  /* ...and above the bottom bar on phones */
+  @media (max-width: 639px) {
+    html {
+      scroll-padding-bottom: 5.5rem;
+    }
   }
 
   h1, h2, h3 {
@@ -88,86 +97,158 @@ body::after {
   top: 0.75rem;
 }
 
-/* One label style above section headings, sitewide. Sentence case, no capitals. */
-.eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 600;
-  color: var(--color-amber-700);
-}
+/* Component classes live in a layer, so a utility on the same element (a ring, a
+   shadow, padding) still wins, as it does everywhere else in Tailwind */
+@layer components {
+  /* One label style above section headings, sitewide. Sentence case, no capitals. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    color: var(--color-amber-700);
+  }
 
-/* Buttons: one primary, one secondary. Both 44px tall minimum. */
-.btn-engineering-primary,
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 2.75rem;
-  border-radius: 2px;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  letter-spacing: -0.005em;
-  padding: 0.75rem 1.25rem;
-  text-align: center;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
-}
-
-@media (min-width: 640px) {
+  /* Buttons: one primary, one secondary. Both 44px tall minimum. */
   .btn-engineering-primary,
-  .btn-secondary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    letter-spacing: -0.005em;
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+  }
+
+  @media (min-width: 640px) {
+    .btn-engineering-primary,
+    .btn-secondary,
+    .btn-accent,
+    .btn-on-dark {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  .btn-engineering-primary {
+    background-color: var(--color-petrol-700);
+    color: #FFFFFF;
+    border: 1px solid var(--color-petrol-800);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-engineering-primary:hover {
+    background-color: var(--color-petrol-800);
+  }
+
+  /* Second button on dark petrol bands: outline, next to .btn-accent */
+  .btn-on-dark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    color: #FFFFFF;
+    border: 1px solid rgb(255 255 255 / 0.25);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .btn-on-dark:hover {
+    background-color: rgb(255 255 255 / 0.1);
+  }
+
+  /* Primary button on dark petrol bands: logo amber with dark text (~9:1) */
   .btn-accent {
-    padding-inline: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    background-color: var(--color-amber-400);
+    color: var(--color-petrol-950);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .btn-accent:hover {
+    background-color: var(--color-amber-300);
+  }
+
+  .btn-accent:active,
+  .btn-on-dark:active,
+  .btn-engineering-primary:active,
+  .btn-secondary:active {
+    transform: translateY(1px);
+  }
+
+  .btn-secondary {
+    background-color: #FFFFFF;
+    color: var(--color-gray-800);
+    border: 1px solid var(--color-gray-300);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-gray-100);
   }
 }
 
-.btn-engineering-primary {
-  background-color: var(--color-petrol-700);
-  color: #FFFFFF;
-  border: 1px solid var(--color-petrol-800);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.btn-engineering-primary:hover {
-  background-color: var(--color-amber-700);
-}
-
-/* Primary button on dark petrol bands: logo amber with dark text (~9:1) */
-.btn-accent {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 2.75rem;
+/* FlowDiagram: the amber light travels along the dashed line, like the logo's "on" light */
+.flow-line::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
   border-radius: 2px;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  padding: 0.75rem 1.25rem;
-  text-align: center;
-  background-color: var(--color-amber-400);
-  color: var(--color-petrol-950);
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  background: var(--color-amber-400);
+  left: -6px;
+  top: 0;
 }
 
-.btn-accent:hover {
-  background-color: var(--color-amber-300);
+@media (min-width: 768px) {
+  .flow-line::after {
+    top: -6px;
+    left: 0;
+  }
 }
 
-.btn-accent:active,
-.btn-engineering-primary:active,
-.btn-secondary:active {
-  transform: translateY(1px);
+@media (prefers-reduced-motion: no-preference) {
+  .flow-line::after {
+    animation: flow-down 4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+
+  @media (min-width: 768px) {
+    .flow-line::after {
+      animation-name: flow-across;
+    }
+  }
 }
 
-.btn-secondary {
-  background-color: #FFFFFF;
-  color: var(--color-gray-800);
-  border: 1px solid var(--color-gray-300);
+@keyframes flow-down {
+  0% { top: 0; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: calc(100% - 10px); opacity: 0; }
 }
 
-.btn-secondary:hover {
-  background-color: var(--color-gray-100);
+@keyframes flow-across {
+  0% { left: 0; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: calc(100% - 10px); opacity: 0; }
 }
 
 /* One stroke weight for every Lucide icon on the site */
@@ -218,7 +299,7 @@ svg.lucide {
   .hero-stagger > :nth-child(4) { animation-delay: 180ms; }
 
   .hero-media {
-    animation: rise-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+    animation: rise-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   /* The logo's O drawn in from the hero photo's corner (BrandArcs) */

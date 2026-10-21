@@ -8,15 +8,18 @@ interface PageHeaderProps {
   badge: string;
   title: string;
   description: React.ReactNode;
-  /** Unsplash photo id, shown only on wide screens */
+  /** Photo (Unsplash id or '/images/foto/<name>'), shown only on wide screens */
   image?: string;
+  /** Also show the photo on phones, under the text (pages where the photo is the subject) */
+  imageOnPhones?: boolean;
+  imageAlt?: string;
   /** Smaller header without photo, for task pages like the enquiry */
   compact?: boolean;
   children?: React.ReactNode;
 }
 
 // The page title is set from src/data/pages.json (RouteMeta and the build), not here.
-export const PageHeader: React.FC<PageHeaderProps> = ({ badge, title, description, image, compact = false, children }) => (
+export const PageHeader: React.FC<PageHeaderProps> = ({ badge, title, description, image, imageOnPhones = false, imageAlt = '', compact = false, children }) => (
   <header className="border-b bg-white border-gray-200 text-gray-900">
     <div
       className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-10 lg:gap-12 items-center ${
@@ -25,7 +28,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ badge, title, descriptio
     >
       <div className="lg:col-span-7">
         <nav aria-label="Jesteś tutaj" className={compact ? 'mb-2' : 'mb-5'}>
-          <ol className="flex items-center gap-2 text-sm text-gray-600">
+          <ol role="list" className="flex items-center gap-2 text-sm text-gray-600">
             <li>
               <Link
                 to="/"
@@ -57,10 +60,18 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ badge, title, descriptio
       </div>
 
       {image && !compact && (
-        <div className="hidden lg:block lg:col-span-5">
-          <div className="rounded-[2px] overflow-hidden border border-gray-200 shadow-lg aspect-[4/3]">
-            {/* Wide screens only: phones don't download it */}
-            <Photo id={image} alt="" widths={[640, 960]} sizes="40vw" desktopOnly className="w-full h-full object-cover object-center" />
+        <div className={`${imageOnPhones ? '' : 'hidden '}lg:block lg:col-span-5`}>
+          <div className="rounded-[2px] overflow-hidden border border-gray-200 shadow-lg aspect-[16/10] lg:aspect-[4/3]">
+            {/* Usually wide screens only: phones don't download it. On the first screen, so not lazy */}
+            <Photo
+              id={image}
+              alt={imageAlt}
+              widths={[640, 960, 1280]}
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              desktopOnly={!imageOnPhones}
+              eager
+              className="w-full h-full object-cover object-center"
+            />
           </div>
         </div>
       )}

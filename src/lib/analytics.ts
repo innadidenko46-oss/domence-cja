@@ -6,6 +6,8 @@
 //   'Zapytanie: krok'     the visitor reached step 2 or 3 of the enquiry (prop: krok)
 //   'Zapytanie'           an enquiry reached us through the form service (the main goal)
 //   'Zapytanie e-mailem'  without a form service: the visitor opened the prepared e-mail
+//   'Zapytanie: błąd'     the form service did not accept an enquiry (prop: powod =
+//                         timeout, siec or the HTTP status); worth an alert in Plausible
 
 const DOMAIN = (import.meta.env.VITE_PLAUSIBLE_DOMAIN as string | undefined)?.trim() || '';
 

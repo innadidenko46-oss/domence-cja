@@ -10,7 +10,7 @@ import { loadEnv } from 'vite';
 const site = JSON.parse(readFileSync('src/config/site.json', 'utf8'));
 const pages = JSON.parse(readFileSync('src/data/pages.json', 'utf8'));
 const vercel = JSON.parse(readFileSync('vercel.json', 'utf8'));
-const { render, ROUTE_PATHS, REDIRECTS } = await import(pathToFileURL('dist-ssr/entry-server.js').href);
+const { render, ROUTE_PATHS, ROUTE_FILES, REDIRECTS, NOT_FOUND_META } = await import(pathToFileURL('dist-ssr/entry-server.js').href);
 
 const fail = (msg) => {
   console.error(`prerender: ${msg}`);
@@ -41,12 +41,32 @@ const jsonLd = (data) =>
 
 const template = readFileSync('dist/index.html', 'utf8');
 if (!template.includes('<div id="root"></div>')) fail('dist/index.html has no empty #root');
+// Without it every page would ship without title, meta and structured data
+if (!template.includes('<title>DOMENCE</title>')) fail('dist/index.html has no <title>DOMENCE</title> placeholder');
 
-// Preload the two Latin font files so headings don't change font after loading.
+// Preload the font files so headings don't change font after loading: the Latin ones and
+// the Latin Extended ones, which hold the Polish letters (ą, ę, ł, ś, ż…).
 // (The hero photo needs no line here: React adds its preload for <img fetchPriority="high">.)
 const fontPreloads = readdirSync('dist/assets')
-  .filter((f) => /^(outfit|plus-jakarta-sans)-latin-wght-normal-.*\.woff2$/.test(f))
+  .filter((f) => /^(outfit|plus-jakarta-sans)-latin(-ext)?-wght-normal-.*\.woff2$/.test(f))
   .map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin />`);
+
+// Each page's own code (and what it imports), so the browser fetches it together with the
+// main script instead of after it: the page reacts sooner on slow phones.
+const manifest = JSON.parse(readFileSync('dist/.vite/manifest.json', 'utf8'));
+const chunkFiles = (key, seen = new Set()) => {
+  const entry = manifest[key];
+  if (!entry || seen.has(key)) return [];
+  seen.add(key);
+  return [entry.file, ...(entry.imports || []).flatMap((k) => chunkFiles(k, seen))];
+};
+const modulePreloads = (path) => {
+  const file = ROUTE_FILES[path];
+  if (file && !manifest[file]) fail(`${file} (route ${path}) is not in the build manifest`);
+  return [...new Set(file ? chunkFiles(file) : [])]
+    .filter((f) => f.endsWith('.js') && !template.includes(f))
+    .map((f) => `<link rel="modulepreload" crossorigin href="/${f}" />`);
+};
 
 // What is true about the company today, nothing more (see CLAUDE.md, content honesty)
 const business = () => {
@@ -57,7 +77,8 @@ const business = () => {
     '@id': `${SITE_URL}/#firma`,
     name: site.name,
     url: `${SITE_URL}/`,
-    logo: `${SITE_URL}/brand/domence-napis.svg`,
+    // Square and crawlable: Google needs at least 112×112 px for a logo
+    logo: `${SITE_URL}/brand/apple-touch-icon.png`,
     image: `${SITE_URL}/images/og-domence.jpg`,
     description:
       'Montaż inteligentnego domu, kamer i wideodomofonów w Warszawie i okolicach: światło, rolety, ogrzewanie, ochrona przed zalaniem, wejście i brama.',
@@ -82,6 +103,17 @@ const breadcrumbs = (path, title) => ({
   ],
 });
 
+// The site's name in search results (home page only)
+const website = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#strona`,
+  name: site.name,
+  url: `${SITE_URL}/`,
+  inLanguage: 'pl-PL',
+  publisher: { '@id': `${SITE_URL}/#firma` },
+});
+
 const head = ({ path, title, description, noindex = false }) =>
   [
     `<title>${esc(fullTitle(title))}</title>`,
@@ -99,16 +131,15 @@ const head = ({ path, title, description, noindex = false }) =>
     '<meta property="og:image:alt" content="Telefon z obrazem z kamery przy furtce w wieczornym korytarzu domu" />',
     '<meta name="twitter:card" content="summary_large_image" />',
     ...fontPreloads,
-    noindex ? '' : jsonLd(path === '/' ? business() : breadcrumbs(path, title)),
+    ...modulePreloads(path),
+    noindex ? '' : path === '/' ? jsonLd(website()) + jsonLd(business()) : jsonLd(breadcrumbs(path, title)),
   ]
     .filter(Boolean)
     .join('\n    ');
 
+// Function replacements: a "$&" or "$'" in page copy must stay text, not a pattern
 const page = (meta, body) =>
-  template
-    .replace('<title>DOMENCE</title>', head(meta))
-    .replace('<div id="root"></div>', `<div id="root">${body}</div>`)
-    .replaceAll('__SITE_EMAIL__', esc(site.email));
+  template.replace('<title>DOMENCE</title>', () => head(meta)).replace('<div id="root"></div>', () => `<div id="root">${body}</div>`);
 
 const write = (path, html) => {
   const dir = path === '/' ? 'dist' : `dist${path}`;
@@ -126,27 +157,29 @@ for (const [path, meta] of Object.entries(pages)) {
 const notFound = await render('/nie-znaleziono-strony');
 writeFileSync(
   'dist/404.html',
-  page({ path: '/404', title: 'Nie znaleziono strony', description: 'Ta strona nie istnieje.', noindex: true }, notFound),
+  page({ path: '/404', ...NOT_FOUND_META, noindex: true }, notFound),
 );
 
 // Old addresses: vercel.json answers with a 308; these pages cover other hosts
 for (const [from, to] of Object.entries(REDIRECTS)) {
   write(
     from,
-    `<!doctype html><meta charset="utf-8"><title>${esc(site.name)}</title><meta name="robots" content="noindex"><link rel="canonical" href="${pageUrl(to)}"><meta http-equiv="refresh" content="0; url=${to}"><a href="${to}">${pageUrl(to)}</a>\n`,
+    `<!doctype html><html lang="pl"><meta charset="utf-8"><title>${esc(site.name)}</title><link rel="canonical" href="${pageUrl(to)}"><meta http-equiv="refresh" content="0; url=${to}"><a href="${to}">${pageUrl(to)}</a>\n`,
   );
 }
 
-const today = new Date().toISOString().slice(0, 10);
+// No <lastmod>: a build date on every page each deploy teaches search engines to ignore it
 writeFileSync(
   'dist/sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${Object.keys(pages)
-    .map((p) => `  <url><loc>${pageUrl(p)}</loc><lastmod>${today}</lastmod></url>`)
+    .map((p) => `  <url><loc>${pageUrl(p)}</loc></url>`)
     .join('\n')}\n</urlset>\n`,
 );
-writeFileSync('dist/robots.txt', `User-agent: *\nAllow: /\nDisallow: /brand/\nSitemap: ${SITE_URL}/sitemap.xml\n`);
+// /brand/ stays crawlable: the logo in the structured data lives there (its page has noindex)
+writeFileSync('dist/robots.txt', `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
 rmSync('dist-ssr', { recursive: true, force: true });
+rmSync('dist/.vite', { recursive: true, force: true });
 console.log(`prerender: ${Object.keys(pages).length} pages, 404.html, ${Object.keys(REDIRECTS).length} redirects, sitemap.xml, robots.txt`);
 
 // The forms send enquiries only through a form service. Without one they fall back to
@@ -154,7 +187,25 @@ console.log(`prerender: ${Object.keys(pages).length} pages, 404.html, ${Object.k
 const env = loadEnv('production', process.cwd(), 'VITE_');
 if (!env.VITE_FORM_ENDPOINT) {
   console.warn('\n⚠  VITE_FORM_ENDPOINT is empty: enquiries fall back to the visitor\'s mail program. See docs/launch-checklist.md.');
+} else {
+  // A form service the browser isn't allowed to reach, or Web3Forms without its key,
+  // would lose every enquiry: stop the build instead
+  let origin = '';
+  try {
+    origin = new URL(env.VITE_FORM_ENDPOINT).origin;
+  } catch {
+    fail(`VITE_FORM_ENDPOINT is not an address: ${env.VITE_FORM_ENDPOINT}`);
+  }
+  const csp = (vercel.headers || []).flatMap((h) => h.headers).find((h) => h.key === 'Content-Security-Policy')?.value || '';
+  const connect = csp.split(';').find((d) => d.trim().startsWith('connect-src')) || '';
+  if (!connect.split(/\s+/).includes(origin)) fail(`add ${origin} to connect-src in vercel.json, or the browser will block the form`);
+  if (origin === 'https://api.web3forms.com' && !env.VITE_FORM_ACCESS_KEY) fail('Web3Forms needs VITE_FORM_ACCESS_KEY');
 }
 if (!env.VITE_PLAUSIBLE_DOMAIN) {
-  console.warn('⚠  VITE_PLAUSIBLE_DOMAIN is empty: no visit statistics. See docs/launch-checklist.md.\n');
+  console.warn('⚠  VITE_PLAUSIBLE_DOMAIN is empty: no visit statistics. See docs/launch-checklist.md.');
+}
+// RODO art. 13 and UŚUDE art. 5: the site must name the company behind it
+const legal = site.legal || {};
+if (!(legal.companyName && legal.address && legal.nip)) {
+  console.warn('⚠  legal.companyName, address and nip are empty in src/config/site.json: the site names no company (RODO, UŚUDE). See docs/launch-checklist.md.\n');
 }

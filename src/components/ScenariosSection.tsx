@@ -58,9 +58,11 @@ export const ScenariosSection: React.FC = () => {
   const [activeId, setActiveId] = useState(SCENARIOS[0].id);
 
   const onKeyDown = (e: React.KeyboardEvent, index: number) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    // Arrows move between tabs, Home and End jump to the first and the last one
+    if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(e.key)) return;
     e.preventDefault();
-    const next = (index + (e.key === 'ArrowRight' ? 1 : -1) + SCENARIOS.length) % SCENARIOS.length;
+    const next =
+      e.key === 'Home' ? 0 : e.key === 'End' ? SCENARIOS.length - 1 : (index + (e.key === 'ArrowRight' ? 1 : -1) + SCENARIOS.length) % SCENARIOS.length;
     setActiveId(SCENARIOS[next].id);
     document.getElementById(`sc-tab-${SCENARIOS[next].id}`)?.focus();
   };
@@ -90,11 +92,11 @@ export const ScenariosSection: React.FC = () => {
                 onClick={() => setActiveId(sc.id)}
                 onKeyDown={(e) => onKeyDown(e, i)}
                 className={`p-3.5 rounded-[2px] text-left border flex flex-col gap-2 min-h-[96px] cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-petrol-600 focus-visible:ring-offset-2 ${
-                  selected ? 'bg-amber-500/10 border-amber-600 ring-1 ring-amber-600' : 'bg-gray-50 border-gray-200 hover:border-gray-400'
+                  selected ? 'bg-petrol-50 border-petrol-700 ring-1 ring-petrol-700' : 'bg-gray-50 border-gray-200 hover:border-gray-400'
                 }`}
               >
                 <span className="flex items-center justify-between w-full">
-                  <span className={`text-sm font-semibold ${selected ? 'text-amber-800' : 'text-gray-600'}`}>{sc.tag}</span>
+                  <span className={`text-sm font-semibold ${selected ? 'text-petrol-700' : 'text-gray-600'}`}>{sc.tag}</span>
                   <span className={`w-7 h-7 rounded-[2px] flex items-center justify-center ${selected ? 'bg-petrol-700 text-white' : 'bg-gray-200 text-gray-700'}`}>
                     {icon(sc.icon)}
                   </span>
@@ -159,7 +161,7 @@ export const ScenariosSection: React.FC = () => {
             </div>
 
             <div className="mt-8 pt-6 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-gray-200">
-              <span className="text-sm text-gray-600">Działa w domu, bez obcych serwerów</span>
+              <span className="text-sm text-gray-600">Działa w domu, także bez internetu</span>
               <Link
                 to="/zapytanie"
                 className="inline-flex items-center gap-1.5 min-h-11 text-sm font-semibold text-petrol-700 hover:text-amber-800 focus-visible:ring-2 focus-visible:ring-petrol-600"

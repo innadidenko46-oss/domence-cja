@@ -6,12 +6,12 @@ import { Phone, Mail, MapPin, CheckCircle2, ClipboardList, ArrowRight, Building2
 
 const HOW_WE_WORK = [
   'Za darmo sprawdzamy dom przed wyceną',
-  'Zakres, cenę i termin potwierdzamy na piśmie przed startem',
+  'Zakres, cenę i termin potwierdzamy na piśmie przed rozpoczęciem prac',
   'Po montażu uczymy domowników obsługi i bezpłatnie konfigurujemy system',
 ];
 
 const cardClass = 'flex items-start gap-4 p-5 rounded-[2px] border bg-white border-gray-200';
-const iconClass = 'w-10 h-10 rounded-[2px] bg-amber-500/15 text-amber-800 flex items-center justify-center shrink-0';
+const iconClass = 'w-10 h-10 rounded-[2px] bg-petrol-50 text-petrol-700 flex items-center justify-center shrink-0';
 
 export const ContactPage: React.FC = () => {
   const { legal } = SITE;
@@ -22,7 +22,7 @@ export const ContactPage: React.FC = () => {
       <PageHeader
         badge="Kontakt"
         title="Porozmawiaj z inżynierem o swoim domu"
-        description={`Budujesz dom albo remontujesz mieszkanie w Warszawie i okolicach? Odpowiadamy ${RESPONSE_LINE}.`}
+        description={`Budujesz dom, remontujesz albo masz już gotowe mieszkanie w Warszawie i okolicach? Odpowiadamy ${RESPONSE_LINE}.`}
         image="photo-1600566753190-17f0baa2a6c3"
       />
 
@@ -60,26 +60,26 @@ export const ContactPage: React.FC = () => {
           <div className="lg:col-span-5 space-y-3">
             <h2 className="font-display text-xl font-bold text-gray-900 mb-4">Kontakt bezpośredni</h2>
             {SITE.phone && (
-              <a href={telHref(SITE.phone)} className={`${cardClass} hover:border-amber-500 focus-visible:ring-2 focus-visible:ring-petrol-600`}>
+              <a href={telHref(SITE.phone)} className={`${cardClass} hover:border-petrol-700 focus-visible:ring-2 focus-visible:ring-petrol-600`}>
                 <span className={iconClass}>
                   <Phone className="w-5 h-5" aria-hidden="true" />
                 </span>
                 <span>
                   <span className="block text-sm text-gray-600">Telefon</span>
                   <span className="block text-base font-bold text-gray-900">{SITE.phone}</span>
-                  <span className="block text-sm text-gray-600 mt-0.5">{SITE.hours}</span>
+                  <span className="block text-base text-gray-600 mt-0.5">{SITE.hours}</span>
                 </span>
               </a>
             )}
 
-            <a href={`mailto:${SITE.email}`} className={`${cardClass} hover:border-amber-500 focus-visible:ring-2 focus-visible:ring-petrol-600`}>
+            <a href={`mailto:${SITE.email}`} className={`${cardClass} hover:border-petrol-700 focus-visible:ring-2 focus-visible:ring-petrol-600`}>
               <span className={iconClass}>
                 <Mail className="w-5 h-5" aria-hidden="true" />
               </span>
               <span>
                 <span className="block text-sm text-gray-600">E-mail</span>
                 <span className="block text-base font-bold text-gray-900 break-all">{SITE.email}</span>
-                <span className="block text-sm text-gray-600 mt-0.5">Odpowiadamy {RESPONSE_LINE}</span>
+                <span className="block text-base text-gray-600 mt-0.5">Odpowiadamy {RESPONSE_LINE}</span>
               </span>
             </a>
 
@@ -90,7 +90,7 @@ export const ContactPage: React.FC = () => {
               <span>
                 <span className="block text-sm text-gray-600">Gdzie działamy</span>
                 <span className="block text-base font-bold text-gray-900">{SITE.region}</span>
-                <span className="block text-sm text-gray-600 mt-0.5">Przyjeżdżamy na miejsce i bezpłatnie sprawdzamy dom.</span>
+                <span className="block text-base text-gray-600 mt-0.5">Przyjeżdżamy na miejsce i bezpłatnie sprawdzamy dom.</span>
               </span>
             </div>
 
@@ -102,7 +102,7 @@ export const ContactPage: React.FC = () => {
                 <span>
                   <span className="block text-sm text-gray-600">{SITE.engineer.role}</span>
                   <span className="block text-base font-bold text-gray-900">{SITE.engineer.name}</span>
-                  <span className="block text-sm text-gray-600 mt-0.5">Twój kontakt od pierwszej rozmowy do nauki obsługi.</span>
+                  <span className="block text-base text-gray-600 mt-0.5">Twój kontakt od pierwszej rozmowy do nauki obsługi.</span>
                 </span>
               </div>
             )}

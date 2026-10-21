@@ -9,16 +9,19 @@ export const INTEREST_OPTIONS: {
   icon: typeof Home;
   /** Page that explains it */
   path: string;
-  /** Unsplash photo id for the home page card */
+  /** Link text to that page: says where it goes, not just "więcej" */
+  more: string;
+  /** Photo for the home page card: Unsplash id or '/images/foto/<name>' */
   image: string;
   imageAlt: string;
 }[] = [
   {
     value: 'dom',
-    title: 'Mądry dom',
+    title: 'Inteligentny dom',
     sub: 'Światło, rolety, ogrzewanie i ochrona przed zalaniem.',
     icon: Home,
     path: '/systemy',
+    more: 'Więcej o inteligentnym domu',
     image: 'photo-1584622781564-1d987f7333c1',
     imageAlt: 'Salon z roletami na oknach i kominkiem',
   },
@@ -28,8 +31,9 @@ export const INTEREST_OPTIONS: {
     sub: 'Obraz z kamer w telefonie, rozmowa z furtki i wejście bez kluczy.',
     icon: Video,
     path: '/teletechnika',
-    image: 'photo-1600585154526-990dced4db0d',
-    imageAlt: 'Elewacja domu wieczorem z oświetlonym wejściem',
+    more: 'Więcej o kamerach i wideodomofonie',
+    image: '/images/foto/kamera-elewacja',
+    imageAlt: 'Kamera na elewacji domu wieczorem, obok lampa nad podjazdem',
   },
   {
     value: 'oba',
@@ -37,7 +41,8 @@ export const INTEREST_OPTIONS: {
     sub: 'Wszystko w jednym planie, od jednej firmy.',
     icon: Layers,
     path: '/scenariusze',
-    image: 'photo-1600210492486-724fe5c67fb0',
-    imageAlt: 'Jasny salon z dużymi oknami',
+    more: 'Zobacz przykłady z życia',
+    image: '/images/foto/wideodomofon-furtka',
+    imageAlt: 'Wideodomofon przy furtce, a za nią dom z zapalonym światłem w oknach',
   },
 ];

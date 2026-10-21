@@ -1,26 +1,26 @@
 {
   "/": {
-    "title": "Mądry dom, kamery i wideodomofon w Warszawie | DOMENCE",
+    "title": "Inteligentny dom, kamery i wideodomofon w Warszawie | DOMENCE",
     "description": "Światło, rolety, ogrzewanie, kamery i wideodomofon, które działają też bez internetu. Warszawa i okolice, montaż także bez kucia, cena na piśmie."
   },
   "/systemy": {
-    "title": "Światło, rolety i ogrzewanie z telefonu",
+    "title": "Automatyka domowa: światło, rolety i ogrzewanie",
     "description": "Sterowanie światłem, roletami i ogrzewaniem z włączników i telefonu. Do nowego domu i gotowego mieszkania, także bez kucia ścian. Działa bez internetu."
   },
   "/teletechnika": {
-    "title": "Kamery i wideodomofon",
+    "title": "Kamery do domu i wideodomofon bez abonamentu",
     "description": "Kamery z kolorowym obrazem w nocy, rozmowa z furtki w telefonie i wejście twarzą, kartą lub kodem. Nagrania zostają w domu, bez abonamentu."
   },
   "/scenariusze": {
-    "title": "Scenariusze: co dom robi za Ciebie",
+    "title": "Scenariusze inteligentnego domu na co dzień",
     "description": "Wyjście z domu jednym przyciskiem, czujnik pod pralką, który zakręca wodę, łagodne budzenie i wieczór filmowy. Przykłady automatyki na co dzień."
   },
   "/jak-zaczac": {
-    "title": "Od czego zacząć w Twoim domu",
-    "description": "Mądry dom, kamery z wideodomofonem albo jedno i drugie: co zwykle robimy, od czego zależy cena i jak wygląda współpraca krok po kroku."
+    "title": "Jak zacząć: inteligentny dom i kamery krok po kroku",
+    "description": "Inteligentny dom, kamery z wideodomofonem albo jedno i drugie: co zwykle wchodzi w zakres, od czego zależy cena i jak wygląda współpraca krok po kroku."
   },
   "/faq": {
-    "title": "Pytania i odpowiedzi",
+    "title": "Inteligentny dom i kamery: pytania i odpowiedzi",
     "description": "Czy dom działa bez internetu, czy trzeba kuć ściany, czy nagrania z kamer zostają w domu i ile trwa montaż. Odpowiedzi prostym językiem."
   },
   "/inteligentny-dom-warszawa": {
@@ -28,24 +28,24 @@
     "description": "Światło, rolety, ogrzewanie i ochrona przed zalaniem, które działają same i z telefonu. Także w gotowym mieszkaniu, bez kucia ścian."
   },
   "/wideodomofon-i-kamery-warszawa": {
-    "title": "Wideodomofon i kamery w Warszawie i okolicach",
-    "description": "Rozmowa z gościem przy furtce z telefonu, kamery z kolorowym obrazem w nocy i nagrania na dysku w domu, bez abonamentu."
+    "title": "Montaż wideodomofonu i kamer w Warszawie",
+    "description": "Rozmowa z gościem przy furtce z telefonu, kamery z kolorowym obrazem w nocy i nagrania na dysku w domu, bez abonamentu. Montaż w Warszawie i okolicach."
   },
   "/ochrona-przed-zalaniem": {
     "title": "Ochrona przed zalaniem: czujnik sam zakręca wodę",
-    "description": "Czujnik pod pralką czy zmywarką wykrywa wyciek, a woda od razu się zakręca. Powiadomienie w telefonie, działa bez internetu."
+    "description": "Czujnik zalania pod pralką czy zmywarką wykrywa wyciek, a zawór od razu zakręca wodę, także bez internetu. Montaż w Warszawie i okolicach."
   },
   "/automatyka-bez-kucia": {
     "title": "Inteligentne mieszkanie bez kucia ścian",
-    "description": "Małe moduły za zwykłymi włącznikami, głowice na grzejnikach i czujniki na baterie. Ściany, płytki i gładzie zostają całe."
+    "description": "Małe moduły za zwykłymi włącznikami, głowice na grzejnikach i czujniki na baterie. Ściany, płytki i gładzie zostają całe. Warszawa i okolice."
   },
   "/zapytanie": {
     "title": "Odbierz propozycję dla swojego domu",
-    "description": "Zaznacz, co Cię interesuje, i zostaw kontakt, to około 2 minut. Odezwiemy się z propozycją telefonicznie albo tylko e-mailem, zwykle w 24 godziny robocze."
+    "description": "Zaznacz, co Cię interesuje, i zostaw kontakt – to około 2 minut. Odezwiemy się telefonicznie albo tylko e-mailem, jak wolisz."
   },
   "/kontakt": {
-    "title": "Kontakt",
-    "description": "Warszawa i okolice. Napisz e-mail albo opisz swój dom w krótkim zapytaniu, a odezwiemy się z propozycją, zwykle w 24 godziny robocze."
+    "title": "Kontakt: Warszawa i okolice",
+    "description": "Warszawa i okolice. Napisz e-mail albo opisz swój dom w krótkim zapytaniu, a odezwiemy się telefonicznie albo tylko e-mailem."
   },
   "/polityka-prywatnosci": {
     "title": "Polityka prywatności",

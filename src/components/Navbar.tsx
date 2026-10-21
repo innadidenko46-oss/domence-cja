@@ -6,7 +6,7 @@ import { CTA } from '../config/site.ts';
 
 // All sections on one level: no dropdowns or hidden submenus
 export const NAV_LINKS = [
-  { label: 'Automatyka', path: '/systemy' },
+  { label: 'Inteligentny dom', path: '/systemy' },
   { label: 'Kamery i wideodomofon', path: '/teletechnika' },
   { label: 'Scenariusze', path: '/scenariusze' },
   { label: 'Jak zacząć', path: '/jak-zaczac' },
@@ -20,6 +20,14 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
   const drawerRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  // Focus goes back to the toggle only when the visitor closed the menu; after picking a
+  // page it moves to the new content instead (see AppShell)
+  const restoreFocus = useRef(false);
+
+  const closeMenu = () => {
+    restoreFocus.current = true;
+    setMobileMenuOpen(false);
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -28,20 +36,23 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // While the drawer is open: page doesn't scroll, focus stays inside, Esc closes it,
-  // and focus goes back to the toggle on close
+  // While the drawer is open: page doesn't scroll, focus stays inside (the toggle, which
+  // closes it, included), Esc closes it, and focus goes back to the toggle on close
   useEffect(() => {
     if (!mobileMenuOpen) return;
+    restoreFocus.current = false;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     drawerRef.current?.querySelector<HTMLElement>('a, button')?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setMobileMenuOpen(false);
+        closeMenu();
         return;
       }
       if (e.key !== 'Tab' || !drawerRef.current) return;
-      const items = [...drawerRef.current.querySelectorAll<HTMLElement>('a, button')];
+      const items = [toggleRef.current, ...drawerRef.current.querySelectorAll<HTMLElement>('a, button')].filter(
+        (el): el is HTMLElement => !!el,
+      );
       if (!items.length) return;
       const firstEl = items[0];
       const lastEl = items[items.length - 1];
@@ -54,18 +65,24 @@ export const Navbar: React.FC = () => {
       }
     };
     document.addEventListener('keydown', onKey);
+    // Widening the window past the menu's breakpoint hides it: don't leave the page locked
+    const wide = window.matchMedia('(min-width: 1280px)');
+    const onWide = (e: MediaQueryListEvent) => e.matches && setMobileMenuOpen(false);
+    wide.addEventListener('change', onWide);
     const toggle = toggleRef.current;
     return () => {
       document.body.style.overflow = prevOverflow;
       document.removeEventListener('keydown', onKey);
-      toggle?.focus();
+      wide.removeEventListener('change', onWide);
+      if (restoreFocus.current) toggle?.focus();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mobileMenuOpen]);
 
-  // Close the mobile menu on route change
+  // Close the mobile menu on every navigation, also a link to the page already open
   useEffect(() => {
     setMobileMenuOpen(false);
-  }, [location.pathname]);
+  }, [location.key]);
 
   return (
     <>
@@ -80,7 +97,8 @@ export const Navbar: React.FC = () => {
             className="flex items-center shrink-0 focus-visible:ring-2 focus-visible:ring-petrol-600 focus-visible:ring-offset-2"
             aria-label="DOMENCE, strona główna"
           >
-            <Logo size="sm" variant="dark" showSubtitle={true} />
+            {/* brand.md: the tagline only on large formats; in the header it is too small to read */}
+            <Logo size="sm" variant="dark" showSubtitle={false} />
           </Link>
 
           <nav aria-label="Główne menu" className="hidden xl:flex items-center gap-1 text-sm font-medium text-gray-700">
@@ -102,6 +120,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center gap-2 shrink-0">
             <Link
               to="/zapytanie"
+              aria-current={location.pathname === '/zapytanie' ? 'page' : undefined}
               className="hidden sm:inline-flex min-h-11 px-4 py-2 rounded-[2px] bg-petrol-700 hover:bg-petrol-800 text-white font-semibold text-sm items-center gap-1.5 whitespace-nowrap shadow-sm transition-colors focus-visible:ring-2 focus-visible:ring-petrol-600 focus-visible:ring-offset-2"
             >
               <ClipboardList className="w-4 h-4" aria-hidden="true" />
@@ -111,13 +130,13 @@ export const Navbar: React.FC = () => {
             <button
               ref={toggleRef}
               type="button"
-              onClick={() => setMobileMenuOpen((v) => !v)}
+              onClick={() => (mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true))}
               className="xl:hidden w-11 h-11 flex items-center justify-center rounded-[2px] border bg-white border-gray-300 text-gray-900 focus-visible:ring-2 focus-visible:ring-petrol-600 focus-visible:ring-offset-2"
               aria-label={mobileMenuOpen ? 'Zamknij menu' : 'Otwórz menu'}
               aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
+              aria-controls={mobileMenuOpen ? 'mobile-menu' : undefined}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -126,16 +145,13 @@ export const Navbar: React.FC = () => {
       {mobileMenuOpen && (
         <>
           <div
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={closeMenu}
             aria-hidden="true"
-            className="fixed inset-0 top-[68px] z-40 bg-petrol-950/40 xl:hidden animate-fade-in"
+            className="fixed inset-0 top-[68px] z-[45] bg-petrol-950/40 xl:hidden animate-fade-in"
           />
           <div
             ref={drawerRef}
             id="mobile-menu"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menu"
             className="fixed inset-x-0 top-[68px] z-50 border-b p-5 xl:hidden shadow-lg max-h-[calc(100dvh-68px)] overflow-y-auto bg-gray-50 border-gray-200 text-gray-900 animate-fade-up"
           >
             <nav aria-label="Menu mobilne" className="flex flex-col gap-1">
@@ -143,6 +159,7 @@ export const Navbar: React.FC = () => {
                 <NavLink
                   key={link.path}
                   to={link.path}
+                  onClick={() => setMobileMenuOpen(false)}
                   className={({ isActive }) =>
                     `text-base font-medium min-h-11 py-3 px-3 rounded-[2px] flex items-center justify-between transition-colors focus-visible:ring-2 focus-visible:ring-petrol-600 ${
                       isActive ? 'bg-amber-500/15 text-petrol-700 font-semibold' : 'text-gray-800 hover:bg-gray-100'
@@ -157,6 +174,7 @@ export const Navbar: React.FC = () => {
             <div className="pt-4 mt-3 border-t border-gray-200">
               <Link
                 to="/zapytanie"
+                onClick={() => setMobileMenuOpen(false)}
                 className="btn-engineering-primary w-full focus-visible:ring-2 focus-visible:ring-petrol-600 focus-visible:ring-offset-2"
               >
                 {CTA.label}

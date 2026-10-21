@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, Search, X } from 'lucide-react';
 import { FAQ_ITEMS } from '../data/content.ts';
@@ -14,6 +14,8 @@ const CATEGORIES = [
 export const FaqSection: React.FC = () => {
   const [category, setCategory] = useState('all');
   const [query, setQuery] = useState('');
+  // Buttons that clear the search disappear when clicked: focus goes back to the search box
+  const searchRef = useRef<HTMLInputElement>(null);
   const [openIds, setOpenIds] = useState<string[]>([FAQ_ITEMS[0].question]);
 
   // Copy uses non-breaking spaces after one-letter words; the visitor types plain ones
@@ -38,20 +40,24 @@ export const FaqSection: React.FC = () => {
             <Search className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2" aria-hidden="true" />
             <input
               id="faq-search"
+              ref={searchRef}
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="np. internet, abonament, kucie"
-              className="w-full min-h-11 pl-10 pr-10 rounded-[2px] text-base border bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:border-petrol-700 focus-visible:ring-2 focus-visible:ring-petrol-600/50"
+              className="w-full min-h-11 pl-10 pr-12 rounded-[2px] text-base border bg-white border-gray-500 text-gray-900 placeholder:text-gray-500 focus:border-petrol-700 focus:outline-2 focus:outline-offset-0 focus:outline-petrol-600"
             />
             {query && (
               <button
                 type="button"
-                onClick={() => setQuery('')}
+                onClick={() => {
+                  setQuery('');
+                  searchRef.current?.focus();
+                }}
                 aria-label="Wyczyść wyszukiwanie"
-                className="absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-[2px] text-gray-600 hover:text-gray-900 hover:bg-gray-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-petrol-600"
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center rounded-[2px] text-gray-600 hover:text-gray-900 hover:bg-gray-100 cursor-pointer focus-visible:ring-2 focus-visible:ring-petrol-600"
               >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" aria-hidden="true" />
               </button>
             )}
           </div>
@@ -93,6 +99,7 @@ export const FaqSection: React.FC = () => {
                 onClick={() => {
                   setQuery('');
                   setCategory('all');
+                  searchRef.current?.focus();
                 }}
                 className="mt-5 min-h-11 text-sm font-semibold text-petrol-700 hover:text-amber-800 underline underline-offset-4 cursor-pointer focus-visible:ring-2 focus-visible:ring-petrol-600"
               >

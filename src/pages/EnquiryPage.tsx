@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useSyncExternalStore } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../components/PageHeader.tsx';
 import { EnquiryForm } from '../components/EnquiryForm.tsx';
 import { PropertyState, Interest } from '../types.ts';
 import { RESPONSE_LINE, SITE } from '../config/site.ts';
 
+const noopSubscribe = () => () => {};
+
 const NEXT_STEPS = [
-  ['Rozmowa', 'Odezwiemy się telefonicznie albo e-mailem, jak wolisz, i dopytamy o szczegóły.'],
+  ['Rozmowa', 'Odezwiemy się telefonicznie albo e-mailem, jak wolisz. Dopytamy o szczegóły, podpowiemy, co ma sens w Twoim domu, i zaproponujemy termin bezpłatnego sprawdzenia.'],
   ['Bezpłatne sprawdzenie domu', 'Inżynier ogląda instalację na miejscu, w Warszawie i okolicach.'],
   ['Plan i cena na piśmie', 'Wiesz, co i za ile montujemy, zanim zaczniemy. Decyzja należy do Ciebie.'],
 ];
 
 export const EnquiryPage: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  // The form reads the address (?chce=…), which the build doesn't know: it appears after load
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [searchParams] = useSearchParams();
+  // The form reads the address (?chce=…), which the build doesn't know: it appears after
+  // hydration. False while prerendering and hydrating, true at once on a client-side visit.
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
 
   // ?chce=dom|kamery|oba opens the enquiry at step 2; ?etap=budowa|gotowy presets the stage.
   // Old links with ?state=… still work: "security" meant cameras, the rest was the stage.
@@ -27,24 +29,17 @@ export const EnquiryPage: React.FC = () => {
   const initialStage: PropertyState | undefined =
     etap === 'budowa' || legacy === 'deweloperski' ? 'deweloperski' : etap === 'gotowy' || legacy === 'retro' ? 'retro' : undefined;
 
-  const handleInterestChange = (i: Interest) => {
-    const next = new URLSearchParams(searchParams);
-    next.delete('state');
-    next.set('chce', i);
-    setSearchParams(next, { replace: true });
-  };
-
   return (
     <div className="bg-gray-50 text-gray-900">
       <PageHeader
         compact
         badge="Zapytanie"
         title="Opowiedz nam o swoim domu"
-        description={`Trzy krótkie kroki, około 2 minut. Odezwiemy się z propozycją telefonicznie albo tylko e-mailem, ${RESPONSE_LINE}.`}
+        description={`Trzy krótkie kroki, około 2 minut. Odezwiemy się telefonicznie albo tylko e-mailem, ${RESPONSE_LINE}.`}
       />
 
       {mounted ? (
-        <EnquiryForm initialInterest={initialInterest} initialStage={initialStage} onInterestChange={handleInterestChange} />
+        <EnquiryForm initialInterest={initialInterest} initialStage={initialStage} />
       ) : (
         <section aria-busy="true" className="pt-6 pb-16 sm:pt-10 border-t bg-gray-100 border-gray-200">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
@@ -52,7 +47,11 @@ export const EnquiryPage: React.FC = () => {
               <p className="text-sm text-gray-600">Ładowanie formularza…</p>
               <noscript>
                 <p className="mt-2 text-sm text-gray-700">
-                  Formularz potrzebuje JavaScriptu. Napisz do nas: {SITE.email}.
+                  Formularz wymaga włączonego JavaScriptu. Napisz do nas:{' '}
+                  <a href={`mailto:${SITE.email}`} className="font-semibold underline underline-offset-2 text-petrol-700">
+                    {SITE.email}
+                  </a>
+                  .
                 </p>
               </noscript>
             </div>
@@ -68,7 +67,7 @@ export const EnquiryPage: React.FC = () => {
               <li key={title} className="border-t-2 border-petrol-700 pt-4">
                 <span className="font-display text-sm font-semibold tabular-nums text-amber-700">0{i + 1}</span>
                 <h3 className="mt-1 text-base font-bold text-gray-900">{title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-gray-600">{text}</p>
+                <p className="mt-1.5 text-base leading-relaxed text-gray-600">{text}</p>
               </li>
             ))}
           </ol>

@@ -16,18 +16,20 @@ export const CapabilitiesShowcase: React.FC = () => {
   const [activeId, setActiveId] = useState(CAPABILITIES[0].id);
 
   const onKeyDown = (e: React.KeyboardEvent, index: number) => {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    // Arrows move between tabs, Home and End jump to the first and the last one
+    if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(e.key)) return;
     e.preventDefault();
-    const next = (index + (e.key === 'ArrowRight' ? 1 : -1) + CAPABILITIES.length) % CAPABILITIES.length;
+    const next =
+      e.key === 'Home' ? 0 : e.key === 'End' ? CAPABILITIES.length - 1 : (index + (e.key === 'ArrowRight' ? 1 : -1) + CAPABILITIES.length) % CAPABILITIES.length;
     setActiveId(CAPABILITIES[next].id);
     document.getElementById(`cap-tab-${CAPABILITIES[next].id}`)?.focus();
   };
 
   return (
-    <section className="pt-16 pb-20 lg:pt-24 lg:pb-24 border-t bg-gray-100 border-gray-200">
+    <section className="pt-16 pb-20 lg:pt-24 lg:pb-24 border-t bg-white border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-10">
-          <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">Co potrafi Twój dom</h2>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">Co potrafi Twój dom</h2>
           <p className="mt-3 text-base leading-relaxed text-gray-600">
             Światło, rolety i ogrzewanie sterowane z telefonu i zwykłych włączników. Do nowego domu moduły trafiają do rozdzielnicy, do gotowego mieszkania za włączniki.
           </p>
@@ -49,7 +51,7 @@ export const CapabilitiesShowcase: React.FC = () => {
                 onClick={() => setActiveId(cap.id)}
                 onKeyDown={(e) => onKeyDown(e, i)}
                 className={`p-3.5 min-h-11 rounded-[2px] text-left border flex items-center gap-2.5 cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-petrol-600 focus-visible:ring-offset-2 ${
-                  selected ? 'bg-white border-amber-600 ring-1 ring-amber-600' : 'bg-gray-50 border-gray-200 hover:border-gray-400'
+                  selected ? 'bg-petrol-50 border-petrol-700 ring-1 ring-petrol-700' : 'bg-gray-50 border-gray-200 hover:border-gray-400'
                 }`}
               >
                 <span className={`w-8 h-8 rounded-[2px] flex items-center justify-center shrink-0 ${selected ? 'bg-petrol-700 text-white' : 'bg-white text-gray-700 border border-gray-200'}`}>

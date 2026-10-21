@@ -8,7 +8,7 @@ import { CTA } from '../config/site.ts';
 const IF_SOMETHING_STOPS = [
   ['Włączniki działają zawsze', 'Światło i rolety obsłużysz zwykłym włącznikiem, także gdy telefon się rozładuje albo zniknie internet.'],
   ['Bez internetu dom robi swoje', 'Harmonogramy, sceny i czujniki działają w domu. Internet jest potrzebny tylko do sterowania z daleka.'],
-  ['Po przerwie w prądzie', 'Gdy prąd wraca, wszystko samo startuje, a światła nie zapalają się w środku nocy.'],
+  ['Po przerwie w prądzie', 'Gdy prąd wraca, wszystko samo się uruchamia, a światła nie zapalają się w środku nocy.'],
 ];
 
 export const ScenariosPage: React.FC = () => (
@@ -16,7 +16,7 @@ export const ScenariosPage: React.FC = () => (
     <PageHeader
       badge="Scenariusze"
       title="Dom, który robi część rzeczy za Ciebie"
-      description="Światło, rolety i ogrzewanie działają same. Sterujesz zwykłym włącznikiem albo telefonem. Gdy pęknie wężyk, woda sama się zakręca."
+      description="Światło, rolety i ogrzewanie działają same. Sterujesz zwykłym włącznikiem albo telefonem. Gdy pęknie wężyk, zawór sam zakręca wodę."
       image="photo-1600585154526-990dced4db0d"
     />
 
@@ -54,7 +54,7 @@ export const ScenariosPage: React.FC = () => (
           </Link>
           <Link
             to="/jak-zaczac"
-            className="min-h-11 inline-flex items-center justify-center gap-2 px-5 rounded-[2px] border border-white/25 text-white font-semibold text-sm hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-amber-400"
+            className="btn-on-dark focus-visible:ring-2 focus-visible:ring-amber-400"
           >
             <span>Jak zacząć</span>
             <ArrowRight className="w-4 h-4" aria-hidden="true" />

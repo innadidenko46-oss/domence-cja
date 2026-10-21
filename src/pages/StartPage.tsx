@@ -12,7 +12,7 @@ import { CTA } from '../config/site.ts';
 // Each one opens the enquiry with that answer already chosen. No quantities, dates or prices.
 const DETAILS: Record<Interest, { usually: string[]; tip: string }> = {
   dom: {
-    usually: ['Światło i rolety z włączników i telefonu', 'Osobna temperatura w każdym pokoju', 'Czujniki zalania, które same zakręcają wodę'],
+    usually: ['Światło i rolety z włączników i telefonu', 'Osobna temperatura w każdym pokoju', 'Czujniki zalania i zawór, który sam zakręca wodę'],
     tip: 'W budowie prowadzimy kable, w gotowym domu montujemy bez kucia.',
   },
   kamery: {
@@ -22,7 +22,7 @@ const DETAILS: Record<Interest, { usually: string[]; tip: string }> = {
   oba: {
     usually: [
       'Dzwonek po zmroku zapala światło przed furtką',
-      'Na wyjazd światła zapalają się wieczorem, a obraz z kamer masz w telefonie',
+      'Podczas wyjazdu światła zapalają się wieczorem, a obraz z kamer masz w telefonie',
       'Jedna szafka na sprzęt dla kamer i automatyki',
     ],
     tip: 'Planujemy wszystko razem, więc później nic nie trzeba przerabiać.',
@@ -30,8 +30,8 @@ const DETAILS: Record<Interest, { usually: string[]; tip: string }> = {
 };
 
 const PRICE_FACTORS = [
-  ['Wielkość domu', 'Liczba pomieszczeń i pięter, w których coś sterujemy.'],
-  ['Ile rzeczy sterujemy', 'Lampy, rolety, grzejniki, kamery: każdy punkt to osobny moduł albo urządzenie.'],
+  ['Wielkość domu', 'Liczba pomieszczeń i pięter, w których czymś sterujemy.'],
+  ['Iloma rzeczami sterujemy', 'Lampy, rolety, grzejniki, kamery: każdy punkt to osobny moduł albo urządzenie.'],
   ['Nowy dom czy gotowe wnętrze', 'W budowie prowadzimy kable, w gotowym mieszkaniu montujemy moduły bez kucia.'],
   ['Co już masz', 'Rolety z silnikami czy działające lampy często wykorzystujemy bez wymiany.'],
 ];
@@ -41,7 +41,7 @@ export const StartPage: React.FC = () => (
     <PageHeader
       badge="Jak zacząć"
       title="Od czego zacząć w Twoim domu"
-      description="Mądry dom, kamery z wideodomofonem albo jedno i drugie. Wybierz, co Cię interesuje, a zapytanie otworzy się z tą odpowiedzią."
+      description="Inteligentny dom, kamery z wideodomofonem albo jedno i drugie. Wybierz, co Cię interesuje, a zapytanie otworzy się z tą odpowiedzią."
       image="photo-1600607687939-ce8a6c25118c"
     />
 
@@ -51,7 +51,7 @@ export const StartPage: React.FC = () => (
         <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 max-w-3xl">Co Cię interesuje?</h2>
 
         <ol className="mt-10 border-t border-gray-300">
-          {INTEREST_OPTIONS.map(({ value, icon: Icon, title, sub, path }) => (
+          {INTEREST_OPTIONS.map(({ value, icon: Icon, title, sub, path, more }) => (
             <li key={value} className="border-b border-gray-300">
               <Reveal className="grid md:grid-cols-12 gap-6 md:gap-10 py-8 lg:py-10">
                 <div className="md:col-span-4">
@@ -61,13 +61,13 @@ export const StartPage: React.FC = () => (
                   </div>
                   <p className="mt-3 text-base leading-relaxed text-gray-600 max-w-[34ch]">{sub}</p>
                   <Link to={path} className="mt-3 inline-flex items-center gap-1.5 min-h-11 text-sm font-semibold text-petrol-700 hover:text-amber-800 focus-visible:ring-2 focus-visible:ring-petrol-600">
-                    <span>Więcej o tym</span>
+                    <span>{more}</span>
                     <ArrowRight className="w-4 h-4" aria-hidden="true" />
                   </Link>
                 </div>
 
                 <div className="md:col-span-5">
-                  <p className="text-sm font-semibold text-gray-900">Zwykle robimy:</p>
+                  <p className="text-sm font-semibold text-gray-900">Co zwykle wchodzi w zakres:</p>
                   <ul className="mt-3 space-y-2.5">
                     {DETAILS[value].usually.map((u) => (
                       <li key={u} className="flex items-start gap-2.5 text-base leading-relaxed text-gray-700">
@@ -126,7 +126,7 @@ export const StartPage: React.FC = () => (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h2 className="font-display text-2xl sm:text-3xl font-bold">Nie wiesz, co wybrać?</h2>
-          <p className="mt-2 text-base text-gray-200 max-w-xl">Zaznacz „Jedno i drugie”, a inżynier podpowie, od czego zacząć w Twoim domu.</p>
+          <p className="mt-2 text-base text-gray-200 max-w-xl">W zapytaniu zaznaczymy „Jedno i drugie”, a inżynier podpowie, od czego zacząć w Twoim domu.</p>
         </div>
         <Link
           to="/zapytanie?chce=oba"

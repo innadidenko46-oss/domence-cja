@@ -2,7 +2,7 @@
 
 A marketing site in Polish for an installer of smart home systems, IP cameras and video intercoms. It is built with React, Vite, Tailwind v4 and React Router, and deployed by Vercel (`vercel.json`). Every page is prerendered to static HTML at build time, then React takes it over in the browser.
 
-- **Adding a page:** add the route in `src/routes.tsx` **and** its title and description in `src/data/pages.json`. The build (`scripts/prerender.mjs`) writes `dist/<route>/index.html` with the page's content, title, description, canonical address and structured data, plus `404.html`, `sitemap.xml` and `robots.txt`. It stops when the two lists differ or a description is longer than 170 characters.
+- **Adding a page:** add the route in `src/routes.tsx` (with `file`, the page's source, so the build preloads its code) **and** its title and description in `src/data/pages.json`. The build (`scripts/prerender.mjs`) writes `dist/<route>/index.html` with the page's content, title, description, canonical address and structured data, plus `404.html`, `sitemap.xml` and `robots.txt`. It stops when the two lists differ or a description is longer than 170 characters.
 - **Titles and meta come only from `src/data/pages.json`** (the build, and `src/components/RouteMeta.tsx` for moves between pages). Don't set `document.title` anywhere else.
 - **Search landing pages** (Warszawa, wideodomofon, zalanie, bez kucia) share one template, `src/pages/LandingPage.tsx`. Their copy lives in `src/data/landings.ts`. A new one needs an entry there, a route and a `pages.json` entry.
 - **Old addresses:** `/pakiety`, `/multimedia` and `/kalkulator` are 308 redirects in `vercel.json`, also listed in `REDIRECTS` in `src/routes.tsx` (the build checks both match). Old `#/` links are rewritten in `src/main.tsx`.
@@ -15,7 +15,7 @@ A marketing site in Polish for an installer of smart home systems, IP cameras an
 - **Keep the qualifying question.** The enquiry asks when the installation is planned (`INSTALL_TIMELINES` in `src/config/site.ts`). Don't remove it to make the form shorter.
 - **E-mail only is a choice.** The visitor picks "Zadzwońcie" or "Tylko e-mail" (`src/components/ContactChoice.tsx`). With e-mail only, the phone is optional, the e-mail required, and the lead says "proszę nie dzwonić". Copy promising contact says "odezwiemy się", never "oddzwonimy".
 - **No exact prices on the site for now.** Scope and price come after a call.
-- **No fixed packages.** The first question everywhere is what the visitor wants: "Mądry dom", "Kamery i wideodomofon" or "Jedno i drugie" (`src/data/interests.ts`). The house stage (in construction or finished) is asked on step 2 of the enquiry, together with the size. `/jak-zaczac`, the home chooser and landing pages open `/zapytanie?chce=dom|kamery|oba` (optionally `&etap=budowa|gotowy`) at step 2; old `?state=` links still work.
+- **No fixed packages.** The first question everywhere is what the visitor wants: "Inteligentny dom", "Kamery i wideodomofon" or "Jedno i drugie" (`src/data/interests.ts`). The house stage (in construction or finished) is asked on step 2 of the enquiry, together with the size. `/jak-zaczac`, the home chooser and landing pages open `/zapytanie?chce=dom|kamery|oba` (optionally `&etap=budowa|gotowy`) at step 2; old `?state=` links still work.
 - **Not a calculator.** The `/zapytanie` page is a short enquiry before the contact details. Never call it a "kalkulator" or an "ankieta".
 - **One call to action, the same words everywhere:** `CTA` in `src/config/site.ts` ("Odbierz propozycję dla swojego domu", short form "Odbierz propozycję" in the header and the mobile bar). Never "Dobierz zestaw": the engineer proposes the scope after the call.
 
@@ -79,7 +79,8 @@ A marketing site in Polish for an installer of smart home systems, IP cameras an
 
 - **Browser storage:** none. No cookies, no localStorage, so no consent banner. The enquiry answers are kept in memory only (`src/lib/enquiryDraft.ts`). Don't add storage or tracking cookies.
 - **Privacy policy** is a page, `/polityka-prywatnosci` (`src/pages/PrivacyPage.tsx`), linked from the form and the footer. Update it when a new service handles visitor data.
-- **Statistics:** Plausible without cookies, on only when `VITE_PLAUSIBLE_DOMAIN` is set (`src/lib/analytics.ts`). The goal is "Zapytanie" (an enquiry the form service accepted); "Zapytanie: krok" and "Zapytanie e-mailem" show the funnel.
+- **Statistics:** Plausible without cookies, on only when `VITE_PLAUSIBLE_DOMAIN` is set (`src/lib/analytics.ts`). The goal is "Zapytanie" (an enquiry the form service accepted); "Zapytanie: krok" and "Zapytanie e-mailem" show the funnel, "Zapytanie: błąd" a form service that refused an enquiry.
+- **Where an enquiry came from:** the lead carries the first and last page of the visit, UTM tags and the referring site (`src/lib/visitSource.ts`, memory only, no personal data), plus the exact consent text the visitor ticked.
 - **Form service:** `VITE_FORM_ENDPOINT` (and `VITE_FORM_ACCESS_KEY` for Web3Forms). Without it the form says honestly that the visitor still has to send the prepared e-mail. A hidden field catches bots.
 - **Build variables** are set in the Vercel project (Settings → Environment Variables); see `.env.example`. The build prints a warning while they are empty.
 - **Security headers** (Content-Security-Policy and others) are in `vercel.json`. A new outside service (form, statistics, images) must be added to the policy. Inline scripts are not allowed, so the prerender keeps all HTML in place.
@@ -95,7 +96,8 @@ A marketing site in Polish for an installer of smart home systems, IP cameras an
 - **Type:** Outfit for display, Plus Jakarta Sans for body. No monospace font anywhere. Body copy at least 16px (`text-base`) on phones.
 - **Classes to reuse:**
   - `.eyebrow` for an occasional section label (sentence case), at most one per three sections;
-  - `.btn-engineering-primary` (petrol) and `.btn-secondary` on light backgrounds, `.btn-accent` on dark bands (all 44px minimum height).
+  - `.btn-engineering-primary` (petrol) and `.btn-secondary` on light backgrounds, `.btn-accent` and the outline `.btn-on-dark` on dark bands (all 44px minimum height, in `@layer components` so utilities on the same element win).
+  - The selected state of every choice, tab and card is petrol: `bg-petrol-50 border-petrol-700 ring-1 ring-petrol-700`.
 - **Motion:** CSS only (`index.css`: `.hero-stagger`, `.reveal`, `animate-fade-up`), transform and opacity, nothing hidden before JavaScript runs, all off under reduced motion. No animation library.
 - **Tabs and accordions** keep every panel in the HTML and hide the closed ones with `hidden`, so search engines read all the copy.
 - **Text contrast:** at least 4.5:1. Don't use `gray-400` text on light backgrounds.

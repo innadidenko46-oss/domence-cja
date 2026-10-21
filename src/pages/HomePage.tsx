@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Wrench, ArrowRight, CheckCircle2, Lock, Cpu, Phone, Mail, MapPin, FileText, Home } from 'lucide-react';
+import { Wrench, ArrowRight, CheckCircle2, Lock, Cpu, Phone } from 'lucide-react';
 import { ProcessSection } from '../components/ProcessSection.tsx';
 import { ProofSection } from '../components/ProofSection.tsx';
 import { EverydaySection } from '../components/EverydaySection.tsx';
@@ -10,20 +10,14 @@ import { OfflineDemo } from '../components/OfflineDemo.tsx';
 import { BrandArcs } from '../components/BrandArcs.tsx';
 import { Reveal } from '../components/Reveal.tsx';
 import { Photo } from '../components/Photo.tsx';
+import { TrustList } from '../components/TrustList.tsx';
 import { SITE, CTA, RESPONSE_LINE, telHref } from '../config/site.ts';
-
-const TRUST = [
-  { icon: Home, text: 'Bezpłatne sprawdzenie domu' },
-  { icon: FileText, text: 'Plan i cena na piśmie' },
-  { icon: CheckCircle2, text: 'Bez abonamentu' },
-  { icon: MapPin, text: 'Warszawa i okolice' },
-];
 
 const PILLARS = [
   {
     icon: Lock,
     title: 'Prywatność i działanie bez internetu',
-    text: 'Obraz z kamer i dane zostają w Twoim domu. Nic nie wysyłamy na obce serwery i nie płacisz miesięcznego abonamentu.',
+    text: 'Nagrania z kamer zapisują się na dysku w Twoim domu, a światło i rolety działają także bez internetu. Nie płacisz miesięcznego abonamentu.',
   },
   {
     icon: Cpu,
@@ -38,17 +32,17 @@ const PILLARS = [
 ];
 
 const FOR_WHOM = [
-  'Budujesz dom albo remontujesz mieszkanie w Warszawie i okolicach.',
-  'Chcesz, żeby światło, rolety, ogrzewanie i kamery działały razem, także bez internetu.',
+  'Budujesz dom, remontujesz albo masz już gotowe mieszkanie w Warszawie i okolicach.',
+  'Chcesz, żeby światło, ogrzewanie albo kamery i furtka działały same, także bez internetu.',
   'Planujesz montaż w najbliższych miesiącach.',
-  'Wolisz jedną firmę od wszystkiego zamiast kilku wykonawców.',
+  'Wolisz, żeby wszystkim zajęła się jedna firma, a nie kilku wykonawców.',
 ];
 
 const YOU_GET = [
   ['Bezpłatna rozmowa i sprawdzenie domu', 'Przyjeżdżamy, oglądamy instalację i słuchamy, czego potrzebujesz.'],
   ['Plan i cena na piśmie', 'Wiesz, co i za ile montujemy, zanim zaczniemy.'],
-  ['Jeden kontakt od początku do końca', `${SITE.engineer.name}, ${SITE.engineer.role.toLowerCase()}, prowadzi Twój dom od rozmowy do nauki obsługi.`],
-  ['Nauka obsługi i bezpłatna konfiguracja', 'Każdy w domu wie, jak zapalić światło, otworzyć furtkę i podejrzeć kamery.'],
+  ['Jeden kontakt od początku do końca', `${SITE.engineer.name}, ${SITE.engineer.role.toLowerCase()}, jest Twoim kontaktem od pierwszej rozmowy do nauki obsługi.`],
+  ['Nauka obsługi i bezpłatna konfiguracja', 'Bez dopłat ustawiamy sceny, harmonogramy i aplikacje pod Twój dom. Uczymy każdego domownika, jak zapalić światło, otworzyć furtkę i podejrzeć obraz z kamer.'],
 ];
 
 export const HomePage: React.FC = () => (
@@ -58,11 +52,15 @@ export const HomePage: React.FC = () => (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
         <div className="lg:col-span-7 hero-stagger">
           <h1 className="font-display text-4xl sm:text-5xl 2xl:text-6xl font-extrabold tracking-[-0.015em] leading-[1.05] text-gray-950">
-            Mądry dom, kamery i wideodomofon. <span className="text-amber-600">Działają też bez internetu.</span>
+            Inteligentny dom, kamery i wideodomofon. <span className="text-amber-600">Działają też bez internetu.</span>
           </h1>
 
           <p className="mt-5 text-base sm:text-lg leading-relaxed text-gray-600 max-w-2xl">
-            Światło, rolety, ogrzewanie i furtka: z włączników na ścianie i z telefonu. Montujemy w Warszawie i okolicach, w nowych domach i w gotowych mieszkaniach bez kucia ścian.
+            Światło, rolety, ogrzewanie i furtka: z włączników na ścianie i z telefonu. Montujemy w Warszawie i okolicach, w nowych domach i w gotowych mieszkaniach{' '}
+            <Link to="/automatyka-bez-kucia" className="underline underline-offset-4 decoration-gray-400 hover:text-petrol-700 hover:decoration-petrol-700">
+              bez kucia ścian
+            </Link>
+            .
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
@@ -77,20 +75,13 @@ export const HomePage: React.FC = () => (
               Zobacz, co montujemy
             </a>
           </div>
-          <p className="mt-3 text-sm text-gray-600">{CTA.note}. Odezwiemy się telefonicznie albo tylko e-mailem.</p>
+          <p className="mt-3 text-base text-gray-600">{CTA.note}. Odezwiemy się telefonicznie albo tylko e-mailem.</p>
 
-          <ul className="mt-8 pt-6 border-t grid grid-cols-2 gap-x-4 gap-y-3 text-sm border-gray-200 text-gray-700">
-            {TRUST.map(({ icon: Icon, text }) => (
-              <li key={text} className="flex items-center gap-2">
-                <Icon className="w-4 h-4 text-petrol-700 shrink-0" aria-hidden="true" />
-                <span>{text}</span>
-              </li>
-            ))}
-          </ul>
+          <TrustList className="mt-8 pt-6 border-t border-gray-200" />
         </div>
 
         <div className="lg:col-span-5 hero-media relative">
-          <BrandArcs className="hidden lg:block absolute right-0 bottom-0 translate-x-[calc(100%-1rem)] translate-y-[calc(100%-1rem)] w-36 h-36 pointer-events-none" />
+          <BrandArcs className="hidden min-[1440px]:block absolute right-0 bottom-0 translate-x-[calc(100%-1rem)] translate-y-[calc(100%-1rem)] w-36 h-36 pointer-events-none" />
           <div className="rounded-[2px] overflow-hidden border border-gray-200 shadow-xl aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/5]">
             <img
               src="/images/hero-wideodomofon.jpg"
@@ -116,7 +107,7 @@ export const HomePage: React.FC = () => (
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {INTEREST_OPTIONS.map(({ value, title, sub, icon: Icon, path, image, imageAlt }) => (
+          {INTEREST_OPTIONS.map(({ value, title, sub, icon: Icon, path, more, image, imageAlt }) => (
             <article key={value} className="flex flex-col rounded-[2px] border border-gray-200 bg-white overflow-hidden">
               <div className="h-32 sm:h-44 lg:h-52 bg-gray-200">
                 <Photo id={image} alt={imageAlt} widths={[480, 800]} sizes="(min-width: 768px) 33vw, 100vw" className="w-full h-full object-cover" />
@@ -138,7 +129,7 @@ export const HomePage: React.FC = () => (
                     to={path}
                     className="inline-flex items-center justify-center gap-1.5 min-h-11 text-sm font-semibold text-petrol-700 hover:text-amber-800 focus-visible:ring-2 focus-visible:ring-petrol-600"
                   >
-                    <span>Zobacz, jak to działa</span>
+                    <span>{more}</span>
                     <ArrowRight className="w-4 h-4" aria-hidden="true" />
                   </Link>
                 </div>
@@ -157,13 +148,13 @@ export const HomePage: React.FC = () => (
         </Reveal>
 
         <div className="order-1 lg:order-2 lg:col-span-6">
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">Czym to się różni od zestawów ze sklepu</h2>
-          <ol className="mt-8 divide-y divide-gray-200 border-y border-gray-200">
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">Czym to się różni od zestawów ze sklepu?</h2>
+          <ol role="list" className="mt-8 divide-y divide-gray-200 border-y border-gray-200">
             {PILLARS.map(({ icon: Icon, title, text }, i) => (
               <li key={title} className="py-6 grid grid-cols-[auto_1fr] gap-x-5">
-                <span className="font-display text-sm font-semibold tabular-nums text-petrol-700 pt-1">0{i + 1}</span>
+                <span className="font-display text-sm font-semibold tabular-nums text-amber-700 pt-1">0{i + 1}</span>
                 <div>
-                  <h3 className="flex items-center gap-2.5 text-lg font-bold text-gray-900">
+                  <h3 className="flex items-center gap-2.5 font-display text-lg font-bold text-gray-900">
                     <Icon className="w-5 h-5 text-amber-600 shrink-0" aria-hidden="true" />
                     {title}
                   </h3>
@@ -187,15 +178,15 @@ export const HomePage: React.FC = () => (
     <section className="pt-16 pb-20 lg:pt-24 lg:pb-24 border-t bg-gray-100 border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mb-10">
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">Najlepiej pomożemy, gdy wiesz, że chcesz mądry dom</h2>
+          <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">Najlepiej pomożemy, gdy wiesz już, czego chcesz w swoim domu</h2>
           <p className="mt-3 text-base leading-relaxed text-gray-600">
-            Jesteśmy nową firmą, więc nie pokażemy jeszcze zdjęć z domów klientów. Dlatego zasady są proste i spisane, zanim cokolwiek zamówisz.
+            Jesteśmy nową firmą, więc nie pokażemy jeszcze zdjęć z domów klientów. Dlatego wszystko ustalamy na piśmie, zanim cokolwiek zamówisz.
           </p>
         </div>
 
         <Reveal className="grid lg:grid-cols-2 gap-10 lg:gap-16">
           <div>
-            <h3 className="font-display text-lg font-bold text-gray-900">Najlepiej pasujemy, jeśli:</h3>
+            <h3 className="font-display text-lg font-bold text-gray-900">Będziemy dobrym wyborem, jeśli:</h3>
             <ul className="mt-5 space-y-4">
               {FOR_WHOM.map((t) => (
                 <li key={t} className="flex items-start gap-3 text-base leading-relaxed text-gray-700">
@@ -205,12 +196,12 @@ export const HomePage: React.FC = () => (
               ))}
             </ul>
             <p className="mt-8 text-base leading-relaxed text-gray-600">
-              Dopiero zbierasz informacje? Zajrzyj do{' '}
-              <Link to="/jak-zaczac" className="font-semibold text-amber-800 underline underline-offset-2 hover:text-amber-700">
+              Dopiero zbierasz informacje? Zajrzyj na stronę{' '}
+              <Link to="/jak-zaczac" className="font-semibold text-petrol-700 underline underline-offset-2 hover:text-amber-800">
                 Jak zacząć
               </Link>{' '}
-              i{'\u00a0'}
-              <Link to="/faq" className="font-semibold text-amber-800 underline underline-offset-2 hover:text-amber-700">
+              albo do{' '}
+              <Link to="/faq" className="font-semibold text-petrol-700 underline underline-offset-2 hover:text-amber-800">
                 pytań i odpowiedzi
               </Link>
               .
@@ -219,7 +210,7 @@ export const HomePage: React.FC = () => (
 
           <div className="lg:border-l lg:border-gray-300 lg:pl-16">
             <h3 className="font-display text-lg font-bold text-gray-900">Co dostajesz:</h3>
-            <ol className="mt-5 space-y-5">
+            <ol role="list" className="mt-5 space-y-5">
               {YOU_GET.map(([title, text], i) => (
                 <li key={title} className="grid grid-cols-[auto_1fr] gap-x-4">
                   <span className="font-display text-sm font-semibold tabular-nums text-amber-700 pt-0.5">0{i + 1}</span>
@@ -235,21 +226,21 @@ export const HomePage: React.FC = () => (
       </div>
     </section>
 
-    {/* FAQ teaser: the three questions people ask first */}
+    {/* FAQ teaser: the questions people ask first (onHome in content.ts) */}
     <section className="pt-16 pb-20 lg:pt-24 lg:pb-24 border-t bg-white border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-10 lg:gap-16">
         <div className="lg:col-span-4">
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">Zanim napiszesz</h2>
           <Link
             to="/faq"
-            className="mt-5 inline-flex items-center gap-2 min-h-11 text-sm font-semibold text-amber-800 hover:text-amber-700 transition-colors focus-visible:ring-2 focus-visible:ring-petrol-600"
+            className="mt-5 inline-flex items-center gap-2 min-h-11 text-sm font-semibold text-petrol-700 hover:text-amber-800 transition-colors focus-visible:ring-2 focus-visible:ring-petrol-600"
           >
             <span>Wszystkie pytania i odpowiedzi</span>
             <ArrowRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>
         <dl className="lg:col-span-8 border-y border-gray-300 divide-y divide-gray-300">
-          {FAQ_ITEMS.slice(0, 3).map((item) => (
+          {FAQ_ITEMS.filter((item) => item.onHome).map((item) => (
             <div key={item.question} className="py-6">
               <dt className="font-display text-lg font-bold text-gray-900">{item.question}</dt>
               <dd className="mt-2 text-base leading-relaxed text-gray-700 max-w-[38rem]">{item.simpleAnswer}</dd>
@@ -272,13 +263,13 @@ export const HomePage: React.FC = () => (
             />
           )}
           <div>
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">Planujesz budowę albo remont?</h2>
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">Chcesz inteligentny dom albo kamery u siebie?</h2>
             <p className="text-base text-gray-200 mt-2 max-w-xl leading-relaxed">
-              Napisz, co chcesz mieć w domu. Odezwiemy się z propozycją telefonicznie albo tylko e-mailem, {RESPONSE_LINE}.
+              Napisz, co chcesz mieć w domu. Odezwiemy się telefonicznie albo tylko e-mailem, {RESPONSE_LINE}.
             </p>
             {SITE.engineer.name && (
               <p className="mt-3 text-sm text-gray-300">
-                Rozmawiasz z: <span className="font-semibold text-white">{SITE.engineer.name}</span>, {SITE.engineer.role.toLowerCase()}
+                Twój kontakt: <span className="font-semibold text-white">{SITE.engineer.name}</span>, {SITE.engineer.role.toLowerCase()}
               </p>
             )}
           </div>
@@ -291,21 +282,11 @@ export const HomePage: React.FC = () => (
           >
             {CTA.label}
           </Link>
-          {SITE.phone ? (
-            <a
-              href={telHref(SITE.phone)}
-              className="min-h-11 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[2px] bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 focus-visible:ring-2 focus-visible:ring-amber-400"
-            >
+          {/* Only a real phone number competes with the enquiry here: an e-mail would skip its questions */}
+          {SITE.phone && (
+            <a href={telHref(SITE.phone)} className="btn-on-dark focus-visible:ring-2 focus-visible:ring-amber-400">
               <Phone className="w-4 h-4" aria-hidden="true" />
               {SITE.phone}
-            </a>
-          ) : (
-            <a
-              href={`mailto:${SITE.email}`}
-              className="min-h-11 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[2px] bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 focus-visible:ring-2 focus-visible:ring-amber-400"
-            >
-              <Mail className="w-4 h-4" aria-hidden="true" />
-              Napisz e-mail
             </a>
           )}
         </div>

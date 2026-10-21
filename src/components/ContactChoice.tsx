@@ -16,7 +16,7 @@ export const ContactChoice: React.FC<{
   idPrefix: string;
 }> = ({ value, onChange, idPrefix }) => (
   <fieldset>
-    <legend className="block text-sm font-semibold mb-2 text-gray-800">Jak wolisz się kontaktować?</legend>
+    <legend className="block text-sm font-semibold mb-2 text-gray-800">Wolisz telefon czy e-mail?</legend>
     <div className="grid grid-cols-2 gap-2">
       {OPTIONS.map(({ value: v, label, icon: Icon }) => {
         const checked = value === v;
@@ -42,10 +42,9 @@ export const ContactChoice: React.FC<{
         );
       })}
     </div>
-    {value === 'email' && (
-      <p className="mt-2 text-sm text-gray-600" aria-live="polite">
-        Nie zadzwonimy. Pytania i{' '}propozycję wyślemy na e-mail.
-      </p>
-    )}
+    {/* Always in the page, so screen readers announce the text when it appears */}
+    <p className="mt-2 text-sm text-gray-600 empty:mt-0" aria-live="polite">
+      {value === 'email' ? 'Nie zadzwonimy. Pytania i\u00A0propozycję wyślemy na e-mail.' : ''}
+    </p>
   </fieldset>
 );

@@ -10,8 +10,8 @@ export const CAPABILITIES: Capability[] = [
     title: 'Światło nastrojowe i ściemnianie',
     badge: 'Światło',
     description:
-      'Każdą lampę możesz przyciemnić tak, jak lubisz, a barwa światła zmienia się w ciągu dnia: rano jest jaśniejsze, wieczorem cieplejsze.',
-    inSwitchboard: 'Moduły siedzą w rozdzielnicy i łączą się kablem. To najpewniejsze rozwiązanie do nowego domu.',
+      'Każdą lampę możesz przyciemnić tak, jak lubisz, a światło zmienia barwę w ciągu dnia: rano jest jaśniejsze, wieczorem cieplejsze.',
+    inSwitchboard: 'Moduły montujemy w rozdzielnicy i łączymy kablem. To najpewniejsze rozwiązanie do nowego domu.',
     behindSwitches: 'Małe moduły chowamy za zwykłymi włącznikami. Działa z lampami, które już masz, bez kucia ścian.',
     example: 'Rano światło powoli się rozjaśnia. W nocy przy podłodze zapala się delikatne, ciepłe światło, które nie rozbudza.',
     features: [
@@ -106,11 +106,11 @@ export const CAMERA_PRODUCTS: CameraProduct[] = [
     id: 'cam-deter',
     name: 'Kamera, która reaguje światłem i komunikatem',
     category: 'cctv_deter',
-    tagline: 'Odróżnia ludzi i auta od zwierząt. Gdy ktoś podchodzi nocą, włącza światło i komunikat.',
+    tagline: 'Odróżnia ludzi i auta od zwierząt. Gdy ktoś podchodzi nocą, włącza światło i odtwarza komunikat.',
     bestUse: 'Wejście do domu, brama wjazdowa i garaż',
     highlights: [
       'Odróżnia ludzi i auta od zwierząt, gałęzi i deszczu',
-      'Nocą włącza światło i komunikat, gdy ktoś podchodzi',
+      'Nocą włącza światło i odtwarza komunikat, gdy ktoś podchodzi',
       'Rozmowa przez kamerę prosto z telefonu',
       'Powiadomienie ze zdjęciem na telefon',
     ],
@@ -148,7 +148,7 @@ export const CAMERA_PRODUCTS: CameraProduct[] = [
     bestUse: 'Furtka i drzwi wejściowe',
     highlights: [
       'Wchodzisz z zakupami bez szukania kluczy',
-      'Trudno go oszukać zdjęciem albo filmem',
+      'Czytnika nie oszukasz zdjęciem ani filmem',
       'Działa po ciemku i w pełnym słońcu',
       'Jednorazowy kod dla gościa lub kuriera',
     ],
@@ -227,14 +227,14 @@ export const SCENARIOS: LifeScenario[] = [
     tag: 'Codziennie',
     trigger: 'Przycisk przy drzwiach albo w telefonie',
     description:
-      'Jeden przycisk przy drzwiach gasi wszystkie światła, odcina prąd w wybranych gniazdkach, np. tym od żelazka, opuszcza rolety i przełącza ogrzewanie na oszczędne.',
+      'Jeden przycisk przy drzwiach gasi wszystkie światła, odcina prąd w wybranych gniazdkach, np. tym od żelazka, opuszcza rolety i przełącza ogrzewanie w tryb oszczędny.',
     humanNote: 'Nie musisz wracać z połowy drogi, żeby sprawdzić żelazko. Naciskasz przycisk i wiesz, że dom jest wyłączony.',
-    detailPoints: ['Wszystkie światła gasną', 'Wybrane gniazdka przestają dostawać prąd', 'Rolety się opuszczają', 'Ogrzewanie przechodzi na oszczędne'],
+    detailPoints: ['Wszystkie światła gasną', 'Wybrane gniazdka przestają dostawać prąd', 'Rolety się opuszczają', 'Ogrzewanie przechodzi w tryb oszczędny'],
     actionSteps: [
       { icon: 'Power', label: 'Gniazdka', detail: 'Żelazko bez prądu' },
       { icon: 'LightbulbOff', label: 'Światła', detail: 'Gasną w całym domu' },
       { icon: 'SlidersHorizontal', label: 'Rolety', detail: 'Opuszczają się' },
-      { icon: 'Thermometer', label: 'Ogrzewanie', detail: 'Przechodzi na oszczędne' },
+      { icon: 'Thermometer', label: 'Ogrzewanie', detail: 'Tryb oszczędny' },
     ],
     image: 'photo-1600607687939-ce8a6c25118c',
     icon: 'LogOut',
@@ -286,9 +286,9 @@ export const SCENARIOS: LifeScenario[] = [
     title: 'Kurier przy furtce',
     tag: 'Wejście',
     trigger: 'Ktoś dzwoni do furtki',
-    description: 'Dzwonek przychodzi jako rozmowa wideo na telefon. Rozmawiasz z kurierem, otwierasz mu furtkę i widzisz, jak zostawia paczkę.',
+    description: 'Dzwonek z furtki odbierasz w telefonie jako rozmowę wideo. Rozmawiasz z kurierem, otwierasz mu furtkę i widzisz, jak zostawia paczkę.',
     humanNote: 'Nie musisz prosić sąsiada o odbiór przesyłki. Otwierasz furtkę z daleka, a nagranie wizyty zostaje na dysku w domu.',
-    detailPoints: ['Rozmowa z gościem w obie strony', 'Kody czasowe dla kuriera albo ekipy', 'Nagranie wizyty na dysku w domu', 'Światło przed furtką zapala się samo po zmroku'],
+    detailPoints: ['Rozmowa z gościem w obie strony', 'Kody tymczasowe dla kuriera albo ekipy', 'Nagranie wizyty na dysku w domu', 'Światło przed furtką zapala się samo po zmroku'],
     actionSteps: [
       { icon: 'Video', label: 'Obraz', detail: 'Furtka na żywo w telefonie' },
       { icon: 'KeyRound', label: 'Otwarcie', detail: 'Jedno dotknięcie otwiera furtkę' },
@@ -304,18 +304,16 @@ export const SCENARIOS: LifeScenario[] = [
     tag: 'Wieczór',
     trigger: 'Przycisk „Film” przy kanapie albo w telefonie',
     description:
-      'Rolety zjeżdżają do końca, lampy gasną i zostaje tylko delikatne światło przy podłodze. Jeśli masz ekran projekcyjny z silnikiem, sam zjeżdża.',
+      'Rolety zjeżdżają do końca, lampy gasną i zostaje tylko delikatne światło przy podłodze.',
     humanNote: 'Nie chodzisz od okna do okna i od włącznika do włącznika. Jeden przycisk i możesz oglądać.',
     detailPoints: [
       'Rolety zasłaniają okna, więc na ekranie nie ma odblasków',
-      'Delikatne światło przy podłodze, żeby przejść po napój',
-      'Ekran z silnikiem zjeżdża i po filmie sam się chowa',
+      'Delikatne światło przy podłodze, żeby bezpiecznie przejść do kuchni',
       'Po filmie ten sam przycisk przywraca zwykłe światło',
     ],
     actionSteps: [
       { icon: 'SlidersHorizontal', label: 'Rolety', detail: 'Zasłaniają okna do końca' },
       { icon: 'Sun', label: 'Światło', detail: 'Zostaje tylko przy podłodze' },
-      { icon: 'Tv', label: 'Ekran', detail: 'Zjeżdża sam' },
     ],
     image: 'photo-1513694203232-719a280e022f',
     icon: 'Tv',
@@ -327,7 +325,7 @@ export const SCENARIOS: LifeScenario[] = [
     tag: 'Noc',
     trigger: 'Wstajesz w nocy z łóżka',
     description:
-      'Gdy wstajesz w nocy, czujnik ruchu przy łóżku zapala słabe, ciepłe światło przy podłodze. Widzisz drogę do łazienki i nie oślepiasz się.',
+      'Gdy wstajesz w nocy, czujnik ruchu przy łóżku zapala słabe, ciepłe światło przy podłodze. Widzisz drogę do łazienki, a ostre światło Cię nie oślepia.',
     humanNote: 'Nie szukasz włącznika po omacku i nie mrużysz oczu przed ostrym światłem. Gdy wrócisz do łóżka, światło samo gaśnie.',
     detailPoints: ['Słabe, ciepłe światło, które nie razi oczu', 'Światło gaśnie samo, gdy wrócisz do łóżka', 'Działa tylko w godzinach, które ustawisz', 'Na noc ogrzewanie w sypialni obniża temperaturę'],
     actionSteps: [
@@ -366,7 +364,7 @@ export const SCENARIOS: LifeScenario[] = [
     detailPoints: [
       'Światła zapalają się w różnych pokojach o różnych porach',
       'Główny zawór wody zostaje zakręcony',
-      'Ogrzewanie przechodzi na oszczędne, ale dom się nie wychładza',
+      'Ogrzewanie przechodzi w tryb oszczędny, ale dom się nie wychładza',
       'Kamery przy wejściu wysyłają powiadomienie, gdy pojawi się człowiek',
     ],
     actionSteps: [
@@ -387,7 +385,7 @@ export const WORKFLOW_STEPS = [
   },
   {
     number: '02',
-    title: 'Sprawdzenie domu, za darmo',
+    title: 'Bezpłatne sprawdzenie domu',
     desc: 'Inżynier ogląda rozdzielnicę, puszki i przewody, żeby zaplanować montaż bez niespodzianek.',
   },
   {
@@ -410,14 +408,16 @@ export const WORKFLOW_STEPS = [
 export const FAQ_ITEMS: FaqItem[] = [
   {
     category: 'dzialanie',
+    onHome: true,
     question: 'Czy dom działa, gdy zabraknie internetu?',
     simpleAnswer:
-      'Tak. Włączniki, rolety, ogrzewanie, czujniki wody i kamery działają w domu bez internetu. Bez niego nie zobaczysz tylko domu z daleka i nie dostaniesz powiadomień poza domem.',
+      'Tak. Włączniki, rolety, ogrzewanie, czujniki zalania i kamery działają w domu bez internetu. Bez niego tracisz tylko podgląd domu z daleka i powiadomienia poza domem.',
     technicalDetails:
       'Moduły rozmawiają ze sobą przez domową sieć (router), nie przez serwer w internecie. Dlatego harmonogramy, sceny i czujniki działają dalej, gdy internet zniknie.',
   },
   {
     category: 'koszty',
+    onHome: true,
     question: 'Ile to kosztuje?',
     simpleAnswer:
       'To zależy od wielkości domu i tego, ile rzeczy ma działać samo. Cenę dostajesz na piśmie po bezpłatnej rozmowie i sprawdzeniu domu, zanim cokolwiek zamówisz.',
@@ -426,11 +426,29 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     category: 'remont',
+    onHome: true,
     question: 'Mam już wykończone mieszkanie. Czy trzeba kuć ściany?',
     simpleAnswer:
-      'Zwykle nie. W gotowym mieszkaniu małe moduły chowamy w puszkach za włącznikami, a czujniki działają na baterie. Pracujemy z odkurzaczem, więc nie zostaje pył.',
+      'Zwykle nie. W gotowym mieszkaniu małe moduły chowamy w puszkach za włącznikami, a czujniki działają na baterie. Wiercimy z odsysaniem pyłu, więc kurzu jest bardzo mało.',
     technicalDetails:
       'Moduły mają wielkość pudełka zapałek i mieszczą się za zwykłym włącznikiem. Jeśli w puszce brakuje jednego przewodu, dokładamy mały element, dzięki któremu żarówki LED nie migają. Napęd zakręcający wodę zakładamy na istniejący zawór.',
+  },
+  {
+    category: 'dzialanie',
+    onHome: true,
+    question: 'Jesteście nową firmą. Co, jeśli kiedyś Was zabraknie?',
+    simpleAnswer:
+      'Dom działa dalej jak zwykle: włączniki na ścianach działają zawsze, a moduły w rozdzielnicy mają czytelny opis, więc inny elektryk szybko zobaczy, co jest czym.',
+    technicalDetails:
+      'Montujemy urządzenia popularnych producentów, np. Shelly i Hikvision, dostępne w polskich sklepach. Zna je wielu instalatorów, więc rozbudowę albo wymianę modułu może zrobić także inna firma.',
+  },
+  {
+    category: 'remont',
+    question: 'Buduję dom. Kiedy najlepiej się odezwać?',
+    simpleAnswer:
+      'Najlepiej, zanim zamkniesz ściany, czyli przed tynkami. Wtedy kable do kamer, wideodomofonu i modułów da się poprowadzić bez kucia. Później też się da, ale część rzeczy zrobimy wtedy bezprzewodowo.',
+    technicalDetails:
+      'Moduły do nowego domu montujemy w rozdzielnicy, więc warto zostawić w niej miejsce, zanim zostanie zamówiona. Podpowiemy to przy bezpłatnym sprawdzeniu domu.',
   },
   {
     category: 'koszty',
@@ -441,9 +459,9 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     category: 'bezpieczenstwo',
-    question: 'Czy nagrania z kamer i domofonu są bezpieczne?',
+    question: 'Czy nagrania z kamer i wideodomofonu są bezpieczne?',
     simpleAnswer:
-      'Tak. Nagrania nie trafiają na serwery w chmurze. Obraz z kamer i wideodomofonu zapisuje się na dysku w rejestratorze w szafce na sprzęt.',
+      'Nagrania z kamer i wideodomofonu zapisują się na dysku w rejestratorze w szafce na sprzęt, nie w chmurze.',
     technicalDetails:
       'Kamery podłączamy do osobnej sieci, oddzielonej od domowych komputerów i telefonów. Podgląd w aplikacji jest szyfrowany, a logowanie zabezpieczamy dodatkowym kodem.',
   },
@@ -465,15 +483,15 @@ export const FAQ_ITEMS: FaqItem[] = [
     category: 'dzialanie',
     question: 'Co się stanie, gdy zabraknie prądu?',
     simpleAnswer:
-      'Bez prądu nie działa nic, co jest zasilane z sieci, także automatyka. Gdy prąd wraca, system sam startuje w kilka sekund, bez udziału domowników.',
+      'Bez prądu nie działa nic, co jest zasilane z sieci, także automatyka. Gdy prąd wraca, system sam uruchamia się w kilka sekund, bez udziału domowników.',
     technicalDetails:
-      'Dla każdego modułu ustawiamy, co ma się stać po powrocie prądu: zostać wyłączony albo wrócić do ostatniego stanu. Dzięki temu po nocnej przerwie w prądzie światła nie zapalą się same.',
+      'Dla każdego modułu ustawiamy, czy po powrocie prądu ma zostać wyłączony, czy wrócić do ostatniego stanu. Dzięki temu po nocnej przerwie w dostawie prądu światła nie zapalą się same.',
   },
   {
     category: 'koszty',
-    question: 'Czy mądry dom obniża rachunki?',
+    question: 'Czy inteligentny dom obniża rachunki?',
     simpleAnswer:
-      'Najwięcej daje ogrzewanie pokój po pokoju: dom grzeje mniej w nocy i tam, gdzie nikogo nie ma. Pomagają też rolety, które latem zatrzymują słońce. Ile zaoszczędzisz, zależy od domu i przyzwyczajeń.',
+      'Najwięcej daje osobne ogrzewanie każdego pokoju: dom grzeje mniej w nocy i tam, gdzie nikogo nie ma. Pomagają też rolety, które latem zatrzymują słońce. Ile zaoszczędzisz, zależy od domu i przyzwyczajeń.',
     technicalDetails: 'W telefonie widzisz, ile prądu zużywa dom i co pobiera go najwięcej. Rolety od strony słońca mogą opuszczać się same o ustalonej porze.',
   },
   {
@@ -494,7 +512,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     category: 'dzialanie',
     question: 'Co dostaję po montażu?',
     simpleAnswer: 'Uczymy domowników obsługi i bezpłatnie konfigurujemy system pod Twój dom: sceny, harmonogramy i aplikacje w telefonach.',
-    technicalDetails: 'Sprawdzamy, czy każdy domownik umie zapalić światło, otworzyć furtkę i podejrzeć kamery.',
+    technicalDetails: 'Sprawdzamy, czy każdy domownik umie zapalić światło, otworzyć furtkę i podejrzeć obraz z kamer.',
   },
 ];
 

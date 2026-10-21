@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PAGES from '../data/pages.json';
 import { SITE } from '../config/site.ts';
@@ -18,9 +18,12 @@ export const canonicalUrl = (path: string) => `${SITE.url}${path === '/' ? '/' :
 
 // The build writes each page's title, description and canonical address into its HTML
 // (scripts/prerender.mjs, from src/data/pages.json). This keeps them right when the
-// visitor moves between pages without reloading.
+// visitor moves between pages without reloading, and tells screen readers which page
+// opened (a page change without a reload is silent otherwise).
 export const RouteMeta = () => {
   const { pathname } = useLocation();
+  const [announcement, setAnnouncement] = useState('');
+  const first = useRef(true);
 
   useEffect(() => {
     const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
@@ -39,10 +42,11 @@ export const RouteMeta = () => {
     };
 
     document.title = fullTitle(title);
+    if (first.current) first.current = false;
+    else setAnnouncement(fullTitle(title));
     setMeta('name', 'description', description);
     setMeta('property', 'og:title', fullTitle(title));
     setMeta('property', 'og:description', description);
-    setMeta('property', 'og:url', canonicalUrl(path));
 
     let canonical = head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     let robots = head.querySelector<HTMLMetaElement>('meta[name="robots"]');
@@ -53,6 +57,7 @@ export const RouteMeta = () => {
         head.appendChild(canonical);
       }
       canonical.href = canonicalUrl(path);
+      setMeta('property', 'og:url', canonicalUrl(path));
       robots?.remove();
     } else {
       canonical?.remove();
@@ -65,5 +70,9 @@ export const RouteMeta = () => {
     }
   }, [pathname]);
 
-  return null;
+  return (
+    <p role="status" className="sr-only">
+      {announcement}
+    </p>
+  );
 };

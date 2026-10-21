@@ -8,7 +8,7 @@ const ROWS = [
   { icon: Thermometer, label: 'Ogrzewanie', local: true },
   { icon: Video, label: 'Kamery nagrywają na dysk w domu', local: true },
   { icon: DoorOpen, label: 'Furtka z panelu w domu', local: true },
-  { icon: Droplets, label: 'Czujniki wody i gazu z zaworem', local: true },
+  { icon: Droplets, label: 'Czujniki zalania i gazu z zaworem', local: true },
   { icon: Smartphone, label: 'Podgląd i powiadomienia poza domem', local: false },
 ];
 
@@ -20,7 +20,7 @@ export const OfflineDemo: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="font-display text-lg font-bold">Internet w domu</div>
-          <p className="text-sm text-gray-200 mt-0.5">Sprawdź, co się stanie, gdy zniknie.</p>
+          <p className="text-base text-gray-200 mt-0.5">Sprawdź, co się stanie, gdy zniknie.</p>
         </div>
         <button
           type="button"
@@ -43,8 +43,8 @@ export const OfflineDemo: React.FC = () => {
           return (
             <li key={label} className={`flex items-center gap-3 py-3 transition-opacity duration-300 ${works ? 'opacity-100' : 'opacity-80'}`}>
               <Icon className="w-5 h-5 text-amber-400 shrink-0" aria-hidden="true" />
-              <span className="flex-1 text-sm">{label}</span>
-              <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${works ? 'text-emerald-300' : 'text-gray-200'}`}>
+              <span className="flex-1 text-base">{label}</span>
+              <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${works ? 'text-amber-300' : 'text-gray-200'}`}>
                 {works ? <Check className="w-4 h-4" aria-hidden="true" /> : <Clock className="w-4 h-4" aria-hidden="true" />}
                 {works ? 'Działa' : 'Wróci z internetem'}
               </span>
@@ -53,8 +53,8 @@ export const OfflineDemo: React.FC = () => {
         })}
       </ul>
 
-      <p className="mt-5 text-sm text-gray-200" aria-live="polite">
-        {online ? 'Kliknij przełącznik i wyłącz internet.' : 'Dom działa dalej. Bez internetu nie zobaczysz go tylko z daleka.'}
+      <p className="mt-5 text-base text-gray-200" aria-live="polite">
+        {online ? 'Kliknij przełącznik i wyłącz internet.' : 'Dom działa dalej. Bez internetu tracisz tylko podgląd i sterowanie z daleka.'}
       </p>
     </div>
   );

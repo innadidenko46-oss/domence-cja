@@ -7,7 +7,9 @@ import { AppShell } from './App.tsx';
 import { ROUTES, REDIRECTS } from './routes.tsx';
 
 export const ROUTE_PATHS = ROUTES.map((r) => r.path);
+export const ROUTE_FILES: Record<string, string> = Object.fromEntries(ROUTES.map((r) => [r.path, r.file]));
 export { REDIRECTS };
+export { NOT_FOUND_META } from './components/RouteMeta.tsx';
 
 export async function render(url: string): Promise<string> {
   const { prelude } = await prerender(

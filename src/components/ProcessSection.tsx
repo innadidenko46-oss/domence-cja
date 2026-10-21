@@ -5,11 +5,11 @@ export const ProcessSection: React.FC = () => (
   <section className="pt-16 pb-20 lg:pt-24 lg:pb-24 border-t bg-white border-gray-200 text-gray-900">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mb-10">
-        <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-[1.2] text-gray-900">
+        <h2 className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight leading-[1.2] text-gray-900">
           Od pierwszej rozmowy do gotowego domu
         </h2>
         <p className="mt-3 text-base leading-relaxed max-w-prose text-gray-600">
-          Wiesz, co dzieje się na każdym etapie. Masz jednego człowieka do kontaktu i termin na piśmie.
+          Wiesz, co dzieje się na każdym etapie. Masz jedną osobę do kontaktu i termin na piśmie.
         </p>
       </div>
 
